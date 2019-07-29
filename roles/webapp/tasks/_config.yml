@@ -1,0 +1,90 @@
+---
+- name: Install Apache and PHP (+ some commonly used extensions)
+  apt:
+    name: '{{ apt_packages }}'
+    state: latest
+    force_apt_get: true
+
+- name: Enable some useful Apache modules
+  apache2_module:
+    name: '{{ item }}'
+    state: present
+  with_items: '{{ apache_enabled_modules }}'
+  notify: apache_config_changed
+
+- name: Disable some useless/unsecure Apache modules
+  apache2_module:
+    name: '{{ item }}'
+    state: absent
+    force: true
+  with_items: '{{ apache_disabled_modules }}'
+  notify: apache_config_changed
+
+- name: Tweak Apache config
+  lineinfile:
+    path: '{{ item.path }}'
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+  with_items:
+    -
+      path: /etc/apache2/conf-enabled/charset.conf
+      regexp: '#?\s*AddDefaultCharset\s'
+      line: 'AddDefaultCharset UTF-8'
+  notify: apache_config_changed
+
+- name: Tweak Apache config (paranoid mode)
+  block:
+    - lineinfile:
+        path: '{{ item.path }}'
+        regexp: '{{ item.regexp }}'
+        line: '{{ item.line }}'
+        state: present
+      with_items:
+        -
+          path: /etc/apache2/conf-enabled/security.conf
+          regexp: '^ServerTokens\s'
+          line: 'ServerTokens Prod'
+        -
+          path: /etc/apache2/conf-enabled/security.conf
+          regexp: '^ServerSignature\s'
+          line: 'ServerSignature Off'
+      notify: apache_config_changed
+  when: paranoid_mode
+
+- name: Check enabled Apache configs
+  stat:
+    path: /etc/apache2/conf-enabled/{{ item }}.conf
+  with_items: '{{ apache_disabled_configs }}'
+  register: disabled_conf_stats
+
+- name: Disable Apache config file
+  shell: a2disconf {{ item.item }}
+  with_items: '{{ disabled_conf_stats.results }}'
+  when: item.stat.exists
+  notify: apache_config_changed
+
+- name: Enforce 1-year Apache access log retention
+  lineinfile:
+    path: /etc/logrotate.d/apache2
+    regexp: '^(\s*)rotate\s'
+    line: '\1rotate 365'
+    backrefs: true
+    state: present
+
+- name: Tweak PHP config
+  lineinfile:
+    path: /etc/php/7.2/apache2/php.ini
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+  with_items:
+    -
+      regexp: '^session.use_strict_mode\s*='
+      line: 'session.use_strict_mode = 1'
+    -
+      regexp: '^session.name\s*='
+      line: 'session.name = _session'
+    -
+      regexp: '^session.gc_probability\s*='
+      line: 'session.gc_probability = 1'

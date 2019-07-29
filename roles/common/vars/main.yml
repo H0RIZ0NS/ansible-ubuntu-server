@@ -1,0 +1,27 @@
+---
+apt_packages:
+  - python-apt
+  - python3-apt
+  - python-pip
+  - python3-pip
+  - unattended-upgrades
+  - update-notifier-common
+  - apt-transport-https
+  - ca-certificates
+  - software-properties-common
+  - openssh-server
+  - ntp
+  - locales
+  - mailutils
+  - ifupdown
+  - sudo
+  - bash
+  - bash-completion
+  - vim
+  - zip
+  - unzip
+  - curl
+
+python_packages:
+  - pip
+  - setuptools

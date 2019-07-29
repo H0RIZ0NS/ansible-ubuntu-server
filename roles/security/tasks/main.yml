@@ -1,0 +1,4 @@
+---
+- import_tasks: _config.yml
+- import_tasks: _umask.yml
+- import_tasks: _admin.yml

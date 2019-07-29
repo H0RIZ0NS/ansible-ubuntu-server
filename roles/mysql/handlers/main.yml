@@ -1,0 +1,6 @@
+---
+- name: Restart MySQL
+  listen: mysql_config_changed
+  service:
+    name: mysql
+    state: restarted
