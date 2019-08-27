@@ -18,7 +18,7 @@
 
 - name: Upgrade all installed packages
   apt:
-    upgrade: true
+    upgrade: safe
 
 - name: Install required packages
   apt:

@@ -1,1 +1,14 @@
 ---
+- hosts: '*'
+  tasks:
+    - import_role:
+        name: roles/common
+
+    - import_role:
+        name: roles/security
+
+    - import_role:
+        name: roles/docker
+
+    - import_role:
+        name: roles/mysql

@@ -1,8 +1,6 @@
 ---
 apt_packages:
-  - python-apt
   - python3-apt
-  - python-pip
   - python3-pip
   - unattended-upgrades
   - update-notifier-common

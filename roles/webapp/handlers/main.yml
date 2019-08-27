@@ -1,6 +1,0 @@
----
-- name: Reload Apache config
-  listen: apache_config_changed
-  service:
-    name: apache2
-    state: reloaded

@@ -27,3 +27,25 @@
     path: /etc/bash.bashrc
     line: 'umask {{ umask_value }}'
     state: present
+
+- name: Find skeleton user files
+  find:
+    path: /etc/skel
+    hidden: true
+  register: skeleton_user_files
+
+- name: Find already installed user files
+  find:
+    path: /home
+    pattern: '{{ item }}'
+    hidden: true
+    recurse: true
+    depth: 2
+  register: installed_user_files
+  with_items: "{{ skeleton_user_files.files|map(attribute='path')|map('basename')|list }}"
+
+- name: Set a more secure chmod for skeleton and installed user files
+  file:
+    path: '{{ item }}'
+    mode: '0600'
+  with_items: "{{ (installed_user_files|json_query('results[*].files[*].path') + skeleton_user_files|json_query('files[*].path'))|flatten }}"
