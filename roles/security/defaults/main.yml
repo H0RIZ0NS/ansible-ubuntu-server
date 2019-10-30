@@ -6,3 +6,5 @@ iptables_additional_rules: ''
 admin_name: admin
 admin_password: ''
 admin_ssh_pubkey: ~
+admin_uid: 1000
+additional_users: []

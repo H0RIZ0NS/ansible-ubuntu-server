@@ -31,14 +31,22 @@ think about a better, more automated solution.
 * `iptables_additional_rules`: additional `iptables` rules that will be appended
   to the default ones (you should use a YAML [block literal](https://en.wikipedia.org/wiki/YAML#Indented_delimiting)
   string here)
-* `admin_name`: the username of the main admin user; this user may or may not
-  already exist on the system
+* `admin_name`: the username of the main admin user
 * `admin_password`: the admin user’s password (encrypted, see
   [here](https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-do-i-generate-encrypted-passwords-for-the-user-module)
   ); if empty, a default password will be generated and stored in a file located
-  at `/tmp/pass-[current_datetime]-[admin_name]`
+  at `/tmp/pass-user-<current_datetime>-<admin_name>` on your local system
 * `admin_ssh_pubkey`: the SSH public key (or a URL to it) with which the admin
   user will be allowed to log into the system
+* `admin_uid`: the admin user’s UID
+* `additional_users`: a list of Linux users that should exist; each element in this
+  list is an object with the following properties:
+    - `username`: the user’s name
+    - `password`: the user’s password (encrypted, see
+      [here](https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-do-i-generate-encrypted-passwords-for-the-user-module)
+      ); if empty, a default password will be generated and stored in a file located
+      at `/tmp/pass-user-<current_datetime>-<username>` on your local system
+    - `uid`: the user’s UID (if empty, will be automatically chosen by the OS)
 
 ## Example playbook
 
@@ -53,5 +61,16 @@ think about a better, more automated solution.
         iptables_additional_rules: ''
         admin_name: admin
         admin_password: ''
-        admin_ssh_pubkey: ~ # You should really override this one, otherwise you won’t be able to log in with the admin user
+        admin_ssh_pubkey: ~ # You should really override this one, otherwise you won’t be able to log in as the admin user
+        admin_uid: 1000
+        additional_users:
+          -
+            username: peter
+            uid: 1001
+          -
+            username: paul
+            uid: 1002
+          -
+            username: jack
+            uid: 1003
 ```

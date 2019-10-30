@@ -4,7 +4,7 @@
 
 * `mysql_databases`: a list of databases that should exist
 * `mysql_users`: a list of users that should exist; each element in this list is
-  an object with the following mandatory properties:
+  an object with the following properties:
     - `username`: the user’s name
     - `password`: the user’s password (in native hashed form, please see
       [here](https://dev.mysql.com/doc/refman/5.7/en/password-hashing.html))
