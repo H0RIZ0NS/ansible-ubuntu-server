@@ -1,4 +1,4 @@
 /.vagrant
-/hosts.test
+/hosts
 *.log
 *.retry

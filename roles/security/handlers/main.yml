@@ -7,6 +7,6 @@
 
 - name: Restart network stack
   listen: iptables_rules_changed
-  shell: ifdown -a --exclude=lo; sleep 3; ifup -a --exclude=lo
+  shell: ifdown --all --exclude=lo; sleep 3; ifup --all --exclude=lo
   async: 15
   poll: 0
