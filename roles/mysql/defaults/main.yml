@@ -1,3 +1,5 @@
 ---
 mysql_databases: []
 mysql_users: []
+mysql_backup_cron_hour: '2'
+mysql_backup_cron_minute: '0'

@@ -20,6 +20,8 @@ apt_packages:
   - vim
   - zip
   - unzip
+  - gzip
+  - bzip2
   - curl
 
 python_packages:
