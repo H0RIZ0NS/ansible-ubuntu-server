@@ -40,5 +40,5 @@
   template:
     src: firewall
     dest: /etc/network/if-pre-up.d/firewall
-    mode: a+x
+    mode: '0700'
   notify: iptables_rules_changed
