@@ -10,6 +10,10 @@
       [here](https://dev.mysql.com/doc/refman/5.7/en/password-hashing.html))
     - `owned_databases`: a list of databases over which the user will have full
       privileges (except `GRANT`)
+* `mysql_backup_cron_hour`: the hour at which MySQL’s daily backup should run
+  (must be quoted as a string)
+* `mysql_backup_cron_minute`: the minute at which MySQL’s daily backup should run
+  (must be quoted as a string)
 
 ## Example playbook
 
@@ -34,4 +38,6 @@
             owned_databases:
               - db1
               - db2
+        mysql_backup_cron_hour: '2'
+        mysql_backup_cron_minute: '0'
 ```
