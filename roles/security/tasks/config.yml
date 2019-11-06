@@ -38,7 +38,7 @@
 
 - name: Set up some restrictive iptables rules
   template:
-    src: firewall
+    src: bin/firewall
     dest: /etc/network/if-pre-up.d/firewall
     mode: '0700'
   notify: iptables_rules_changed

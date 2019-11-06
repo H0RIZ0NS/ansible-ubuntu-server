@@ -1,0 +1,6 @@
+---
+- name: Validate MySQL DB names
+  fail:
+    msg: Invalid database name
+  when: item is not regex('^[\w\.-]+$')
+  with_items: '{{ mysql_databases }}'

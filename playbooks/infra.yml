@@ -3,12 +3,16 @@
   tasks:
     - import_role:
         name: roles/common
+      tags: [common]
 
     - import_role:
         name: roles/security
+      tags: [security]
 
     - import_role:
         name: roles/docker
+      tags: [docker]
 
     - import_role:
         name: roles/mysql
+      tags: [mysql]
