@@ -9,10 +9,14 @@
         name: roles/security
       tags: [security]
 
+- hosts: docker_enabled
+  tasks:
     - import_role:
         name: roles/docker
       tags: [docker]
 
+- hosts: mysql_servers
+  tasks:
     - import_role:
         name: roles/mysql
       tags: [mysql]
