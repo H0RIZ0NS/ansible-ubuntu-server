@@ -1,9 +1,7 @@
 ---
 apt_packages:
-  - python3-apt
-  - python3-pip
-  - python3-setuptools
-  - python3-virtualenv
+  - python-apt
+  - python-pip
   - unattended-upgrades
   - update-notifier-common
   - apt-transport-https
@@ -27,3 +25,4 @@ apt_packages:
 python_packages:
   - pip
   - setuptools
+  - virtualenv

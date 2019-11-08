@@ -11,7 +11,11 @@ Vagrant.configure(2) do |config|
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
   config.vm.provision 'shell', inline: <<~SHELL
+    apt-get update
+    apt-get install -y \
+      python \
+      python-apt
     adduser vagrant sudo
-    deluser --remove-home ubuntu
+    deluser --remove-home ubuntu || true
   SHELL
 end
