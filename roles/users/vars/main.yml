@@ -1,0 +1,3 @@
+linux_user_regexp: '^[a-z][a-z0-9_-]{1,15}$'
+
+linux_password_path_template: '{{ local_password_dir }}/%s@{{ inventory_hostname }}.pass'

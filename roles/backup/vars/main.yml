@@ -1,0 +1,15 @@
+mysql_backup_config_dir: '{{ backup_config_dir }}/mysql'
+mysql_database_list_path: '{{ mysql_backup_config_dir }}/databases.list'
+mysql_backup_rotate_conf_path: '{{ mysql_backup_config_dir }}/rotate.conf'
+mysql_backup_storage_dir: /var/backups/mysql
+mysql_backup_script_path: /usr/local/bin/backup-mysql
+
+backup_config_dir: /etc/backup
+backup_include_list_path: '{{ backup_config_dir }}/include.list'
+backup_exclude_list_path: '{{ backup_config_dir }}/exclude.list'
+backup_log_dir: /var/log/backup
+backup_log_path: '{{ backup_log_dir }}/backup.log'
+backup_credentials_path: ~/.backup.creds
+backup_lib_path: /usr/local/share/backup.bash
+backup_script_path: /usr/local/bin/backup-files
+backup_check_script_path: /usr/local/bin/check-backup

@@ -1,12 +1,12 @@
----
-- name: Restart SSH daemon
+- name: Restart sshd
   listen: sshd_config_changed
   service:
     name: ssh
     state: restarted
 
-- name: Restart network stack
-  listen: iptables_rules_changed
-  shell: ifdown --all --exclude=lo; sleep 3; ifup --all --exclude=lo
-  async: 15
-  poll: 0
+- name: Require a system reboot
+  listen: firewall_config_changed
+  file:
+    path: /var/run/reboot-required
+    state: touch
+    mode: '0644'

@@ -1,10 +1,6 @@
----
-ssh_port: 22
-umask_value: '077'
-iptables_flood_protection_enabled: true
-iptables_additional_rules: ''
-admin_name: admin
-admin_password: ''
-admin_ssh_pubkey: ~
-admin_uid: 1000
-additional_users: []
+server_ssh_port: 22
+
+secure_umask: '077'
+
+enable_firewall: false
+enable_firewall_flood_protection: false

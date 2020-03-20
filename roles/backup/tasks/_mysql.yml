@@ -1,0 +1,43 @@
+- name: Create the required directories
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: '0700'
+  with_items:
+    - '{{ mysql_backup_config_dir }}'
+    - '{{ mysql_backup_storage_dir }}'
+
+- name: Copy the backup config files
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '0600'
+  with_items:
+    - src: config/mysql/databases.list.j2
+      dest: '{{ mysql_database_list_path }}'
+
+    - src: config/mysql/rotate.conf.j2
+      dest: '{{ mysql_backup_rotate_conf_path }}'
+
+- name: Create the database backup subdirectories
+  file:
+    path: '{{ mysql_backup_storage_dir }}/{{ item }}'
+    state: directory
+    mode: '0700'
+  with_items: '{{ mysql_databases }}'
+
+- name: Copy the backup script
+  template:
+    src: bin/backup-mysql.j2
+    dest: '{{ mysql_backup_script_path }}'
+    mode: '0700'
+
+- name: Create a cron job to run the MySQL backup script daily
+  cron:
+    cron_file: backup
+    user: root
+    name: mysql
+    job: '{{ mysql_backup_script_path }} &> {{ backup_log_path }}'
+    hour: 2
+    minute: 0
+    state: present

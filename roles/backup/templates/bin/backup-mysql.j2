@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+set -Eeu -o pipefail
+
+declare -r MYSQL_SOCKET_PATH={{ mysql_socket_path }}
+declare -r MYSQL_BACKUP_STORAGE_DIR={{ mysql_backup_storage_dir }}
+declare -r MYSQL_DATABASE_LIST_PATH={{ mysql_database_list_path }}
+declare -r MYSQL_BACKUP_ROTATE_CONF_PATH={{ mysql_backup_rotate_conf_path }}
+
+_log() {
+  printf "\n== ${1}\n\n"
+}
+
+_dump_db() {
+  local db_name="$1"
+
+  if [[ -z "$db_name" ]]; then
+    _log '[WARNING] Empty database name, skipping'
+
+    return 1
+  fi
+
+  _log "Dumping database <${db_name}>"
+
+  /usr/bin/mysqldump --verbose --socket="$MYSQL_SOCKET_PATH" --databases "$db_name" \
+    | /usr/bin/gzip --best \
+    > "${MYSQL_BACKUP_STORAGE_DIR}/${db_name}/${db_name}.sql.gz"
+}
+
+dump_databases() {
+  while read db_name; do
+    _dump_db "$db_name"
+  done \
+    < "$MYSQL_DATABASE_LIST_PATH"
+}
+
+rotate_backups() {
+  _log 'Rotating database backups'
+
+  /usr/sbin/logrotate --verbose "$MYSQL_BACKUP_ROTATE_CONF_PATH"
+}
+
+main() {
+  dump_databases
+  rotate_backups
+}
+
+main

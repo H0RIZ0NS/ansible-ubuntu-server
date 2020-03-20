@@ -1,7 +1,0 @@
----
-- import_tasks: packages.yml
-  module_defaults:
-    apt:
-      force_apt_get: true
-
-- import_tasks: config.yml

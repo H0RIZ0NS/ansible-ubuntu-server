@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -Eeu -o pipefail
+
+source {{ backup_lib_path }}
+
+deep_check_repository() {
+  restic check --read-data
+}
+
+main() {
+  _export_credentials
+  deep_check_repository
+}
+
+main

@@ -1,0 +1,10 @@
+{{ mysql_backup_storage_dir }}/*/*.sql.gz {
+  size 1
+  rotate {{ backup_retention_days }}
+  missingok
+  nocreate
+  nocompress
+  shred
+  dateext
+  dateformat .%Y-%m-%d_%H:%M:%S
+}

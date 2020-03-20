@@ -1,0 +1,6 @@
+server_timezone: Etc/UTC
+
+installed_locales:
+  - en_US.UTF-8
+
+postmaster_redirect_address: ~

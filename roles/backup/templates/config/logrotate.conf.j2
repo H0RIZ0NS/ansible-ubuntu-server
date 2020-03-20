@@ -1,0 +1,7 @@
+{{ backup_log_path }} {
+  daily
+  rotate {{ backup_retention_days }}
+  missingok
+  nocreate
+  compress
+}

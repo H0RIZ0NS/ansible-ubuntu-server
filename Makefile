@@ -1,14 +1,22 @@
+SHELL := /usr/bin/bash -Eeu -o pipefail
+
+.PHONY: up
+up: requirements
+	vagrant up
+
+.requirements/ansible_collections/:
+	ansible-galaxy collection install --requirements-file requirements.yml
+
+.requirements/ansible_roles/:
+	ansible-galaxy role install --role-file requirements.yml
+
+.PHONY: requirements
+requirements: .requirements/ansible_collections/ .requirements/ansible_roles/
+
 .PHONY: apply
-apply: ensure-inventory
-	ansible-playbook --diff --inventory=hosts playbooks/infra.yml
+apply:
+	ansible-playbook --diff --inventory=hosts.dev playbooks/stack.yml
 
 .PHONY: check
-check: ensure-inventory
-	ansible-playbook --diff --check --inventory=hosts playbooks/infra.yml
-
-.PHONY: ensure-inventory
-ensure-inventory:
-ifeq ($(wildcard hosts),)
-	@echo 'No inventory file found 😞'
-	@exit 1
-endif
+check:
+	ansible-playbook --diff --check --inventory=hosts.dev playbooks/stack.yml

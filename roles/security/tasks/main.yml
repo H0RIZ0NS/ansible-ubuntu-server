@@ -1,4 +1,8 @@
----
-- import_tasks: config.yml
-- import_tasks: perms.yml
-- import_tasks: users.yml
+- import_tasks: _validation.yml
+
+- import_tasks: _config.yml
+
+- import_tasks: _umask.yml
+
+- import_tasks: _firewall.yml
+  when: enable_firewall

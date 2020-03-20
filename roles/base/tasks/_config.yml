@@ -1,0 +1,84 @@
+- name: Gather service facts
+  service_facts: ~
+
+- name: Set the server’s timezone
+  timezone:
+    name: '{{ server_timezone }}'
+    hwclock: UTC
+  notify: time_config_changed
+
+- name: Enable NTP sync
+  command: timedatectl set-ntp 1
+  when: ansible_facts.services['systemd-timesyncd.service'].state|default(None) != 'running'
+  notify: time_config_changed
+
+- name: Set the mailer’s hostname
+  copy:
+    dest: /etc/mailname
+    content: "{{ ansible_fqdn }}\n"
+
+- name: Make Postfix a send-only relay
+  lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+  with_items:
+    - regexp: '^mydestination ='
+      line: 'mydestination = $myhostname, localhost.$mydomain, localhost'
+
+    - regexp: '^inet_interfaces ='
+      line: 'inet_interfaces = loopback-only'
+  notify: postfix_config_changed
+
+- name: Route postmaster and root e-mails to a custom address
+  lineinfile:
+    path: /etc/aliases
+    regexp: '^root:'
+    line: 'root: {{ postmaster_redirect_address }}'
+    state: present
+  when: postmaster_redirect_address is not none
+  notify: aliases_changed
+
+- name: Periodically update and clean the APT package cache
+  lineinfile:
+    path: /etc/apt/apt.conf.d/10periodic
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+  with_items:
+    - regexp: '^APT::Periodic::Download-Upgradeable-Packages '
+      line: 'APT::Periodic::Download-Upgradeable-Packages "1";'
+
+    - regexp: '^APT::Periodic::AutocleanInterval '
+      line: 'APT::Periodic::AutocleanInterval "7";'
+
+- name: Tweak unattended upgrades
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+    backrefs: true
+  with_items:
+    - regexp: '^(?://)?\t"\$\{distro_id\}:\$\{distro_codename\}-updates";$'
+      line: '\t"${distro_id}:${distro_codename}-updates";'
+
+    - regexp: '^(?://)?Unattended-Upgrade::Mail '
+      line: 'Unattended-Upgrade::Mail "{{ postmaster_redirect_address }}";'
+
+    - regexp: '^(?://)?Unattended-Upgrade::Remove-Unused-Dependencies '
+      line: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";'
+
+- name: Install the required locales
+  locale_gen:
+    name: '{{ item }}'
+    state: present
+  with_items: '{{ installed_locales }}'
+
+- name: Prevent the deletion of non-empty groups
+  lineinfile:
+    path: /etc/deluser.conf
+    regexp: '^ONLY_IF_EMPTY ='
+    line: 'ONLY_IF_EMPTY = 1'
+    state: present
