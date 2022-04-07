@@ -1,4 +1,4 @@
-SHELL := /usr/bin/bash -Eeu -o pipefail
+SHELL := /usr/bin/env bash -Eeu -o pipefail
 
 .PHONY: up
 up: requirements
