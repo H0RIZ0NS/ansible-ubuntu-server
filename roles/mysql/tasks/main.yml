@@ -1,4 +1,54 @@
----
-- import_tasks: validation.yml
-- import_tasks: config.yml
-- import_tasks: backup.yml
+- import_tasks: _validation.yml
+
+- name: Install a Python MySQL client (Ansible dependency)
+  pip:
+    name: PyMySQL
+    state: latest
+
+- name: Install MySQL Server 8.0
+  apt:
+    name: mysql-server-8.0
+    state: latest
+    cache_valid_time: 3600
+
+- name: Copy the custom mysqldump config file
+  copy:
+    src: config/mysqldump.cnf
+    dest: /etc/mysql/conf.d/mysqldump.cnf
+    mode: '0644'
+
+- name: Enable and start the MySQL service
+  service:
+    name: mysql
+    state: started
+    enabled: true
+
+- name: Create the required MySQL databases
+  mysql_db:
+    name: '{{ item }}'
+    state: present
+    encoding: utf8mb4
+    collation: utf8mb4_unicode_ci
+    login_unix_socket: '{{ mysql_socket_path }}'
+  with_items: '{{ mysql_databases }}'
+
+- name: Create the required MySQL users and configure database ownership
+  mysql_user:
+    name: '{{ item.name }}'
+    host: '%'
+    state: present
+    password: "{{ lookup('password', mysql_password_path_template|format(item.name)) }}"
+    update_password: on_create
+    priv: "{{ item.owned_databases|map('regex_replace', '^(.+)$', '\\1.*:ALL')|join('/') }}"
+    login_unix_socket: '{{ mysql_socket_path }}'
+  with_items: '{{ mysql_users }}'
+
+- name: Open MySQL to the world if required
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: '^bind-address(\s+)='
+    line: 'bind-address\1= 0.0.0.0'
+    state: present
+    backrefs: true
+  when: make_mysql_public
+  notify: mysql_config_changed

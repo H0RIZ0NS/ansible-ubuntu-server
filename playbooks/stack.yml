@@ -1,0 +1,54 @@
+- hosts: all
+  serial: 1
+  tasks:
+    - name: >
+        Initially ping one host at a time to handle the infamous host key checking problem
+        (see: https://github.com/ansible/ansible/issues/25068)
+      ping: ~
+      tags: [always]
+
+- hosts: all
+  tasks:
+    - import_role:
+        name: roles/base
+      tags: [base]
+
+    - import_role:
+        name: roles/users
+      tags: [users]
+
+    - import_role:
+        name: roles/security
+      tags: [security]
+
+- hosts: docker
+  tasks:
+    - import_role:
+        name: roles/docker
+      tags: [docker]
+
+- hosts: mysql
+  tasks:
+    - import_role:
+        name: roles/mysql
+      tags: [mysql]
+
+- hosts: backup
+  tasks:
+    - import_role:
+        name: roles/backup
+      tags: [backup]
+
+- hosts: all
+  tasks:
+    - block:
+        - name: Check if a reboot has been required
+          stat:
+            path: /var/run/reboot-required
+          register: reboot_file_stat
+
+        - name: Reboot if necessary
+          reboot:
+            reboot_timeout: 180
+          when: reboot_file_stat.stat.exists
+      tags: [always]

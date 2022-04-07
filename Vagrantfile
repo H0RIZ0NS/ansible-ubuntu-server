@@ -1,5 +1,5 @@
 Vagrant.configure(2) do |config|
-  config.vm.box = 'ubuntu/bionic64'
+  config.vm.box = 'ubuntu/focal64'
 
   config.vm.provider 'virtualbox' do |vb|
     vb.cpus = 1
@@ -10,12 +10,9 @@ Vagrant.configure(2) do |config|
 
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
-  config.vm.provision 'shell', inline: <<~SHELL
-    apt-get update
-    apt-get install -y \
-      python \
-      python-apt
-    adduser vagrant sudo
+  config.vm.provision 'shell', inline: <<~SCRIPT
     deluser --remove-home ubuntu || true
-  SHELL
+    sed --in-place --regexp-extended 's/^PasswordAuthentication no$/#PasswordAuthentication yes/' /etc/ssh/sshd_config
+    service ssh restart
+  SCRIPT
 end

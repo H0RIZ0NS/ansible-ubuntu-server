@@ -1,0 +1,29 @@
+- import_tasks: _validation.yml
+
+- name: Create the admin user
+  user:
+    name: '{{ admin_user.name }}'
+    state: present
+    uid: '{{ admin_user.uid }}'
+    password: "{{ lookup('password', linux_password_path_template|format(admin_user.name) + ' encrypt=sha512_crypt') }}"
+    update_password: on_create
+    groups: sudo
+    append: true
+    shell: /usr/bin/bash
+
+- name: Create the regular users
+  user:
+    name: '{{ item.name }}'
+    state: present
+    uid: '{{ item.uid }}'
+    password: "{{ lookup('password', linux_password_path_template|format(item.name) + ' encrypt=sha512_crypt') }}"
+    update_password: on_create
+    shell: /usr/bin/bash
+  with_items: '{{ user_list }}'
+
+- name: Authorize public key authentication for the admin user
+  authorized_key:
+    user: '{{ admin_user.name }}'
+    key: '{{ admin_user.pubkey }}'
+    state: present
+  when: admin_user.pubkey is defined

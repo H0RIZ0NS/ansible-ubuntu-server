@@ -1,6 +1,6 @@
----
+mysql_database_regexp: '^[a-z0-9_-]{1,64}$'
+mysql_user_regexp: '^[a-z0-9_-]{1,32}$'
+
 mysql_socket_path: /var/run/mysqld/mysqld.sock
-mysql_backup_directory: /var/backups/mysql
-mysql_backup_suffix: bak.sql
-mysql_database_list_path: /etc/mysql/databases.list
-mysql_backup_script_path: /usr/local/bin/backup_mysql
+
+mysql_password_path_template: '{{ local_password_dir }}/mysql.%s@{{ inventory_hostname }}.pass'

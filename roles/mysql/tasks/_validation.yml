@@ -1,0 +1,25 @@
+- name: Validate user-input variables
+  assert:
+    that:
+      - mysql_databases is iterable
+      - mysql_users is iterable
+
+- name: Validate the database list
+  assert:
+    that:
+      - item is string and item is match(mysql_database_regexp)
+  with_items: '{{ mysql_databases }}'
+
+- name: Validate the user list
+  assert:
+    that:
+      - item is mapping
+      - item.name is defined and item.name is string and item.name is match(mysql_user_regexp)
+      - item.owned_databases is defined and item.owned_databases is iterable
+  with_items: '{{ mysql_users }}'
+
+- name: Validate the users’ owned database lists
+  assert:
+    that:
+      - item is string and item in mysql_databases
+  with_items: "{{ mysql_users|map(attribute='owned_databases')|list }}"

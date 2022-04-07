@@ -1,0 +1,44 @@
+server_timezone: Europe/Paris
+
+installed_locales:
+  - en_US.UTF-8
+  - fr_FR.UTF-8
+
+user_list:
+  - name: app
+    uid: 1024
+
+enable_firewall: true
+enable_firewall_flood_protection: true
+
+docker_users:
+  - app
+
+mysql_databases:
+  - db1
+  - db2
+
+mysql_users:
+  - name: steve
+    owned_databases:
+      - db2
+
+  - name: stanley
+    owned_databases:
+      - db1
+      - db2
+
+backup_included_path:
+  - /var/backups/mysql/
+  - /var/log/
+  - /home/vagrant/
+
+backup_excluded_path:
+  - /var/log/journal/
+  - /var/log/syslog
+  - /var/log/lastlog
+  - .ansible/
+  - .cache/
+  - .ssh/
+  - .*_history
+  - .viminfo

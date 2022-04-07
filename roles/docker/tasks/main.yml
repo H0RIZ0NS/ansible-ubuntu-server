@@ -1,28 +1,39 @@
----
-- name: Add Docker PPA key
+- import_tasks: _validation.yml
+
+- name: Add Docker’s PPA key
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
 
-- name: Register Docker repository
+- name: Register Docker’s PPA
   apt_repository:
-    repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release|lower }} stable'
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
     filename: docker-ce
+  register: docker_repository
+
+- name: Update the package cache if needed
+  apt:
+    update_cache: true
+  when: docker_repository is changed
 
 - name: Install Docker CE
   apt:
-    name: [docker-ce]
+    name:
+      - apt-transport-https
+      - containerd.io
+      - docker-ce
+      - docker-ce-cli
     state: latest
-    force_apt_get: true
+    cache_valid_time: 3600
 
 - name: Install Docker Compose
   pip:
-    name: [docker-compose]
+    name: docker-compose
     state: latest
 
-- name: Authorize some users to interact with the Docker daemon
+- name: Allow access to the Docker socket by some users
   user:
-    user: '{{ item }}'
+    name: '{{ item }}'
     groups: docker
     append: true
   with_items: '{{ docker_users }}'

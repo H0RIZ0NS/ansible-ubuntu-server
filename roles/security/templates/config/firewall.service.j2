@@ -1,0 +1,13 @@
+[Unit]
+Description=Firewall (iptables)
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart={{ firewall_script_path }}
+ExecStop=/usr/bin/true
+
+[Install]
+WantedBy=multi-user.target

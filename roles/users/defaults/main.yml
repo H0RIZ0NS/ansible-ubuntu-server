@@ -1,0 +1,6 @@
+admin_user:
+  name: manager
+  uid: 9999
+  pubkey: ~
+
+user_list: []

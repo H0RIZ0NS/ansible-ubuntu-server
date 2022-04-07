@@ -1,0 +1,13 @@
+- include_vars:
+    file: ../../users/vars/main.yml
+
+- name: Validate user-input variables
+  assert:
+    that:
+      - docker_users is iterable
+
+- name: Validate the Docker user list
+  assert:
+    that:
+      - item is string and item is match(linux_user_regexp)
+  with_items: '{{ docker_users }}'

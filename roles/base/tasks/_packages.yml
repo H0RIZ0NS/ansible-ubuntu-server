@@ -1,0 +1,54 @@
+- name: Disable backports
+  replace:
+    path: /etc/apt/sources.list
+    regexp: '^(deb .+ {{ ansible_distribution_release }}-backports )'
+    replace: '# \1'
+  register: source_list
+
+- name: Update the package cache if needed
+  apt:
+    update_cache: true
+  when: source_list is changed
+
+- name: Remove some bloat
+  apt:
+    name:
+      - snapd
+      - ufw
+    state: absent
+
+- name: Upgrade the installed packages (+ clean up unused packages)
+  apt:
+    upgrade: safe
+    autoclean: true
+    autoremove: true
+    cache_valid_time: 3600
+
+- name: Install some essential packages
+  apt:
+    name:
+      - bash-completion
+      - bzip2
+      - ca-certificates
+      - curl
+      - gnupg
+      - gzip
+      - mailutils
+      - python3
+      - python3-apt
+      - python3-pip
+      - tar
+      - unattended-upgrades
+      - unzip
+      - update-notifier-common
+      - vim
+    state: latest
+    cache_valid_time: 3600
+
+- name: Upgrade essential Python packages
+  pip:
+    name:
+      - pip
+      - setuptools
+      - virtualenv
+    state: latest

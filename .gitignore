@@ -1,4 +1,3 @@
-/.vagrant
-/hosts
-*.log
-*.retry
+/.requirements/
+/.vagrant/
+__pycache__/
