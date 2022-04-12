@@ -23,8 +23,8 @@ _dump_db() {
   _log "Dumping database <${db_name}>"
 
   /usr/bin/mysqldump --verbose --socket="$MYSQL_SOCKET_PATH" --databases "$db_name" \
-    | /usr/bin/gzip --best \
-    > "${MYSQL_BACKUP_STORAGE_DIR}/${db_name}/${db_name}.sql.gz"
+  | /usr/bin/gzip --best \
+  > "${MYSQL_BACKUP_STORAGE_DIR}/${db_name}/${db_name}.sql.gz"
 }
 
 dump_databases() {
