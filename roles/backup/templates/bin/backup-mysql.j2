@@ -31,7 +31,7 @@ dump_databases() {
   while read db_name; do
     _dump_db "$db_name"
   done \
-    < "$MYSQL_DATABASE_LIST_PATH"
+  < "$MYSQL_DATABASE_LIST_PATH"
 }
 
 rotate_backups() {

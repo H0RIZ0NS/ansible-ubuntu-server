@@ -20,5 +20,5 @@ _export_credentials() {
 
     export "$var_declaration"
   done \
-    < "$BACKUP_CREDENTIALS_PATH"
+  < "$BACKUP_CREDENTIALS_PATH"
 }
