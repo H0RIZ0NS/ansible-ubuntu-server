@@ -5,7 +5,7 @@ _log() {
 }
 
 _export_credentials() {
-  if [[ ! -f "$BACKUP_CREDENTIALS_PATH"  ]] || [[ ! -r "$BACKUP_CREDENTIALS_PATH" ]]; then
+  if [[ ! -f "$BACKUP_CREDENTIALS_PATH" || ! -r "$BACKUP_CREDENTIALS_PATH" ]]; then
     _log "[ERROR] No credential file could be found at ${BACKUP_CREDENTIALS_PATH}"
 
     exit 1
