@@ -10,7 +10,7 @@ It’s still a work in progress, but provides some good foundation for now.
 ## TODO
 
 - [ ] Write the docs
-- [ ] Allow any user to log in through pubkey authentication
+- [x] Allow any user to log in through pubkey authentication
 - [ ] Make the firewall work with Docker
 - [ ] Harden the security even more (install Fail2ban, etc.)
 - [ ] Set up a CI workflow

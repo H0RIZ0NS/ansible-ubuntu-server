@@ -21,9 +21,9 @@
     shell: /usr/bin/bash
   with_items: '{{ user_list }}'
 
-- name: Authorize public key authentication for the admin user
+- name: Allow public key authentication if required
   authorized_key:
-    user: '{{ admin_user.name }}'
-    key: '{{ admin_user.pubkey }}'
+    user: '{{ item.name }}'
+    key: '{{ item.pubkey }}'
     state: present
-  when: admin_user.pubkey is defined
+  with_items: "{{ ([admin_user] + user_list)|selectattr('pubkey', 'defined') }}"
