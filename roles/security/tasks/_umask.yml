@@ -1,27 +1,21 @@
-- name: Enforce the usage of umask in PAM’s config
+- name: Enforce a secure umask value in PAM’s config
   lineinfile:
     path: '{{ item }}'
-    regexp: '(\s+)pam_umask\.so$'
-    line: 'session required\1pam_umask.so'
+    regexp: '^session optional(\s+)pam_umask\.so(?:\s|$)'
+    line: 'session optional\1pam_umask.so umask=0{{ secure_umask }}'
     state: present
     backrefs: true
   with_items:
     - /etc/pam.d/common-session
     - /etc/pam.d/common-session-noninteractive
 
-- name: Enforce a secure umask in login.defs
+- name: Enforce a secure umask value in /etc/login.defs
   lineinfile:
     path: /etc/login.defs
     regexp: '^UMASK(\s+)'
     line: 'UMASK\g<1>{{ secure_umask }}'
     state: present
     backrefs: true
-
-- name: Enforce a secure umask in bash.bashrc
-  lineinfile:
-    path: /etc/bash.bashrc
-    line: 'umask {{ secure_umask }}'
-    state: present
 
 - name: Enforce a secure default file mode for home directories
   lineinfile:
