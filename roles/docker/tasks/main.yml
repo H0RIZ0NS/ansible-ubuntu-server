@@ -26,11 +26,6 @@
     state: latest
     cache_valid_time: 3600
 
-- name: Install Docker Compose
-  pip:
-    name: docker-compose
-    state: latest
-
 - name: Allow access to the Docker socket by some users
   user:
     name: '{{ item }}'
