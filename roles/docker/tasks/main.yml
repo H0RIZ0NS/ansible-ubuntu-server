@@ -8,7 +8,9 @@
 - name: Register Docker’s PPA
   apt_repository:
     repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
-    filename: docker-ce
+    filename: docker
+    mode: '0644'
+    state: present
   register: docker_repository
 
 - name: Update the package cache if needed
@@ -19,10 +21,10 @@
 - name: Install Docker CE
   apt:
     name:
-      - apt-transport-https
       - containerd.io
       - docker-ce
       - docker-ce-cli
+      - docker-compose-plugin
     state: latest
     cache_valid_time: 3600
 
