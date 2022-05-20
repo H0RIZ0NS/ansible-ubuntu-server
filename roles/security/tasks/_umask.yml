@@ -33,7 +33,6 @@
 - name: Apply a secure file mode to the existing home directories
   file:
     path: '{{ item }}'
-    state: file
     mode: '0700'
   with_items: "{{ ['/root'] + home_directories.files|map(attribute='path')|list }}"
 
@@ -49,6 +48,5 @@
 - name: Apply a secure file mode to the existing user dotfiles and skeleton files
   file:
     path: '{{ item.path }}'
-    state: file
     mode: '{{ item.mode|apply_umask(secure_umask) }}'
   with_items: '{{ user_dotfiles.files }}'
