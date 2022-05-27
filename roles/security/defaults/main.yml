@@ -1,6 +1,2 @@
 server_ssh_port: 22
-
 secure_umask: '077'
-
-enable_firewall: false
-enable_firewall_flood_protection: false

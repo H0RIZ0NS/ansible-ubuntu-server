@@ -1,3 +1,3 @@
 dependencies:
   - role: mysql
-    when: "'mysql' in group_names"
+    when: is_mysql

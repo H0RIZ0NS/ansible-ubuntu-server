@@ -2,14 +2,28 @@
 
 set -Eeu -o pipefail
 
-source {{ backup_lib_path }}
+_log() {
+  printf "\n== ${1}\n\n"
+}
+
+export_credentials() {
+  if [[ ! -f "$BACKUP_CREDENTIALS_PATH" || ! -r "$BACKUP_CREDENTIALS_PATH" ]]; then
+    _log "[ERROR] No credential file could be found at ${BACKUP_CREDENTIALS_PATH}"
+
+    exit 1
+  fi
+
+  set -a
+  source "$BACKUP_CREDENTIALS_PATH"
+  set +a
+}
 
 deep_check_repository() {
   restic check --read-data
 }
 
 main() {
-  _export_credentials
+  export_credentials
   deep_check_repository
 }
 

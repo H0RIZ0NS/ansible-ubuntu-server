@@ -1,6 +1,8 @@
 - import_tasks: _validation.yml
 
 - import_tasks: _mysql.yml
-  when: "'mysql' in group_names"
+  when: is_mysql
 
-- import_tasks: _files.yml
+- import_tasks: _server.yml
+
+- import_tasks: _cron.yml

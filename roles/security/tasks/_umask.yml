@@ -1,7 +1,7 @@
 - name: Enforce a secure umask value in PAM’s config
   lineinfile:
     path: '{{ item }}'
-    regexp: '^session optional(\s+)pam_umask\.so(?:\s|$)'
+    regexp: '^session optional(\s+)pam_umask\.so(?: umask=)?'
     line: 'session optional\1pam_umask.so umask=0{{ secure_umask }}'
     state: present
     backrefs: true

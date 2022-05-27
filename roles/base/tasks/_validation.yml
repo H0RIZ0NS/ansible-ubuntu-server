@@ -8,7 +8,7 @@
     that:
       - timezone_file_stat.stat.exists
       - installed_locales is iterable
-      - postmaster_redirect_address is none or (postmaster_redirect_address is string and postmaster_redirect_address|length)
+      - admin_email is string and admin_email|length
 
 - name: Validate the locale list
   assert:

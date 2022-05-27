@@ -21,6 +21,12 @@
         name: roles/security
       tags: [security]
 
+- hosts: firewall
+  tasks:
+    - import_role:
+        name: roles/firewall
+      tags: [firewall]
+
 - hosts: docker
   tasks:
     - import_role:
