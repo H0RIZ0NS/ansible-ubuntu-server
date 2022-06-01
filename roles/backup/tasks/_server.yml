@@ -1,0 +1,44 @@
+- name: Install Restic
+  apt:
+    name: restic
+    state: latest
+    cache_valid_time: 3600
+
+- name: Create the required directories
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: '0700'
+  with_items:
+    - '{{ backup_config_dir }}'
+    - '{{ backup_log_dir }}'
+
+- name: Copy the included/excluded path lists
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '0600'
+  with_items:
+    - src: config/include.list.j2
+      dest: '{{ backup_include_list_path }}'
+
+    - src: config/exclude.list.j2
+      dest: '{{ backup_exclude_list_path }}'
+
+- name: Copy the logrotate config file
+  template:
+    src: config/logrotate.conf.j2
+    dest: /etc/logrotate.d/backup
+    mode: '0600'
+
+- name: Copy the backup scripts
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '0700'
+  with_items:
+    - src: bin/backup-server.j2
+      dest: '{{ backup_script_path }}'
+
+    - src: bin/check-backup.j2
+      dest: '{{ backup_check_script_path }}'

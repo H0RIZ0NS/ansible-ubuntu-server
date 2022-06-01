@@ -1,15 +1,15 @@
 server_timezone: Europe/Paris
+server_hostname: vagrant.local
 
 installed_locales:
   - en_US.UTF-8
   - fr_FR.UTF-8
 
+admin_email: dummy@example.org
+
 user_list:
   - name: app
     uid: 1024
-
-enable_firewall: true
-enable_firewall_flood_protection: true
 
 docker_users:
   - app

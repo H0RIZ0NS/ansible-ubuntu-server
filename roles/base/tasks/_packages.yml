@@ -52,3 +52,47 @@
       - setuptools
       - virtualenv
     state: latest
+
+- name: Periodically auto-download upgradable packages and clean the package cache
+  lineinfile:
+    path: /etc/apt/apt.conf.d/10periodic
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+  with_items:
+    - regexp: '^APT::Periodic::Download-Upgradeable-Packages '
+      line: 'APT::Periodic::Download-Upgradeable-Packages "1";'
+
+    - regexp: '^APT::Periodic::AutocleanInterval '
+      line: 'APT::Periodic::AutocleanInterval "7";'
+
+- name: Tweak unattended upgrades’ config
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+    insertafter: "{{ item.insertafter|default('EOF') }}"
+  with_items:
+    - regexp: '^(?://)?\t"\$\{distro_id\}:\$\{distro_codename\}-updates";$'
+      line: "\t\"${distro_id}:${distro_codename}-updates\";"
+
+    - regexp: '^(?://)?Unattended-Upgrade::Mail '
+      line: 'Unattended-Upgrade::Mail "{{ admin_email }}";'
+
+    - regexp: '^(?://)?Unattended-Upgrade::Sender '
+      line: 'Unattended-Upgrade::Sender "{{ root_email }}";'
+      insertafter: '^Unattended-Upgrade::Mail '
+
+    - regexp: '^(?://)?Unattended-Upgrade::MailReport '
+      line: 'Unattended-Upgrade::MailReport "always";'
+
+    - regexp: '^(?://)?Unattended-Upgrade::Automatic-Reboot '
+      line: 'Unattended-Upgrade::Automatic-Reboot "true";'
+
+    - regexp: '^(?://)?Unattended-Upgrade::Automatic-Reboot-Time '
+      line: 'Unattended-Upgrade::Automatic-Reboot-Time "04:00";'
+
+    - regexp: '^(?://)?Unattended-Upgrade::Update-Days '
+      line: 'Unattended-Upgrade::Update-Days {"Sunday"};'
+      insertafter: '^Unattended-Upgrade::Automatic-Reboot-Time '

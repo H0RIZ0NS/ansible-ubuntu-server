@@ -1,0 +1,4 @@
+- name: Validate user-input variables
+  assert:
+    that:
+      - enable_firewall_flood_protection is boolean

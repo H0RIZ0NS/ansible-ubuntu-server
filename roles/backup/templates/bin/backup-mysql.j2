@@ -2,11 +2,6 @@
 
 set -Eeu -o pipefail
 
-declare -r MYSQL_SOCKET_PATH={{ mysql_socket_path }}
-declare -r MYSQL_BACKUP_STORAGE_DIR={{ mysql_backup_storage_dir }}
-declare -r MYSQL_DATABASE_LIST_PATH={{ mysql_database_list_path }}
-declare -r MYSQL_BACKUP_ROTATE_CONF_PATH={{ mysql_backup_rotate_conf_path }}
-
 _log() {
   printf "\n== ${1}\n\n"
 }

@@ -31,13 +31,3 @@
     src: bin/backup-mysql.j2
     dest: '{{ mysql_backup_script_path }}'
     mode: '0700'
-
-- name: Create a cron job to run the MySQL backup script daily
-  cron:
-    cron_file: backup
-    user: root
-    name: mysql
-    job: '{{ mysql_backup_script_path }} &> {{ backup_log_path }}'
-    hour: 2
-    minute: 0
-    state: present

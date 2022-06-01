@@ -3,5 +3,3 @@
     that:
       - server_ssh_port is integer
       - secure_umask is string and secure_umask is match('^(?:077|027)$')
-      - enable_firewall is boolean
-      - enable_firewall_flood_protection is boolean

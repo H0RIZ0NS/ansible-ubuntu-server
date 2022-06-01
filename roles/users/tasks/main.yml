@@ -27,3 +27,15 @@
     key: '{{ item.pubkey }}'
     state: present
   with_items: "{{ ([admin_user] + user_list)|selectattr('pubkey', 'defined') }}"
+
+- name: Make sure root SSH login is not directly possible anymore
+  file:
+    path: /root/.ssh/authorized_keys
+    state: absent
+
+- name: Prevent the deletion of non-empty groups
+  lineinfile:
+    path: /etc/deluser.conf
+    regexp: '^ONLY_IF_EMPTY ='
+    line: 'ONLY_IF_EMPTY = 1'
+    state: present
