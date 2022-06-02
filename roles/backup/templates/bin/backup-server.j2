@@ -2,6 +2,8 @@
 
 set -Eeu -o pipefail
 
+declare -r BACKUP_CREDENTIALS_PATH="${HOME}/.backup.creds"
+
 _log() {
   printf "\n== ${1}\n\n"
 }
@@ -21,13 +23,13 @@ export_credentials() {
 init_repository() {
   _log 'Checking if the Restic repository is initialized'
 
-  /usr/bin/restic snapshots &> /dev/null || /usr/bin/restic init --verbose
+  restic snapshots &> /dev/null || restic init --verbose
 }
 
 perform_backup() {
   _log 'Starting the server’s backup'
 
-  /usr/bin/restic backup \
+  restic backup \
     --verbose \
     --one-file-system \
     --files-from="$BACKUP_INCLUDE_LIST_PATH" \
@@ -37,13 +39,13 @@ perform_backup() {
 rotate_snapshots() {
   _log 'Purging old snapshots'
 
-  /usr/bin/restic forget --verbose --prune --keep-within={{ backup_retention_days }}d
+  restic forget --verbose --prune --keep-within={{ backup_retention_days }}d
 }
 
 check_repository() {
   _log 'Checking the repository’s integrity'
 
-  /usr/bin/restic check
+  restic check
 }
 
 main() {
