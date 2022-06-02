@@ -91,7 +91,7 @@
       line: 'Unattended-Upgrade::Automatic-Reboot "true";'
 
     - regexp: '^(?://)?Unattended-Upgrade::Automatic-Reboot-Time '
-      line: 'Unattended-Upgrade::Automatic-Reboot-Time "04:00";'
+      line: 'Unattended-Upgrade::Automatic-Reboot-Time "23:59";'
 
     - regexp: '^(?://)?Unattended-Upgrade::Update-Days '
       line: 'Unattended-Upgrade::Update-Days {"Sunday"};'
