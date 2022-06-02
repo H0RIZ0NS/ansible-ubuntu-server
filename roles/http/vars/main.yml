@@ -1,0 +1,2 @@
+http_log_config_dir: /etc/http-logs
+http_log_rotate_conf_path: '{{ http_log_config_dir }}/rotate.conf'

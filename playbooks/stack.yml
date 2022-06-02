@@ -33,6 +33,12 @@
         name: roles/docker
       tags: [docker]
 
+- hosts: http
+  tasks:
+    - import_role:
+        name: roles/http
+      tags: [http]
+
 - hosts: mysql
   tasks:
     - import_role:
