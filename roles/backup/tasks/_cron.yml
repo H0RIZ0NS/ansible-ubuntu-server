@@ -23,21 +23,21 @@
       cron:
         name: report
         job: >
-          mail --append='From: {{ root_email }}' --subject="Backup log" {{ admin_email }}
+          mail --append='From: {{ root_email }}' --subject='Backup log' {{ admin_email }}
           < {{ backup_log_path }}
           &> /dev/null
         hour: 3
         minute: 0
         state: present
 
-    - name: Create the monthly backup deep check job
+    - name: Create the weekly backup deep check job
       cron:
         name: check
         job: >
           {{ backup_check_script_path }}
-          | mail --append='From: {{ root_email }}' --subject="Backup deep check log" {{ admin_email }}
+          | mail --append='From: {{ root_email }}' --subject='Backup deep check log' {{ admin_email }}
           &> /dev/null
-        day: 1
+        weekday: 1
         hour: 3
         minute: 0
         state: present
@@ -48,9 +48,9 @@
         name: '{{ item.name }}'
         job: '{{ item.value }}'
       with_items:
-        - { name: BACKUP_CREDENTIALS_PATH, value: '{{ backup_credentials_path }}' }
         - { name: BACKUP_EXCLUDE_LIST_PATH, value: '{{ backup_exclude_list_path }}' }
         - { name: BACKUP_INCLUDE_LIST_PATH, value: '{{ backup_include_list_path }}' }
+        - { name: BASH_ENV, value: /etc/environment }
 
     - name: Set MySQL-related environment variables used by the cron jobs
       cron:

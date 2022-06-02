@@ -2,6 +2,8 @@
 
 set -Eeu -o pipefail
 
+declare -r BACKUP_CREDENTIALS_PATH="${HOME}/.backup.creds"
+
 _log() {
   printf "\n== ${1}\n\n"
 }

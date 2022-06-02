@@ -17,8 +17,8 @@ _dump_db() {
 
   _log "Dumping database <${db_name}>"
 
-  /usr/bin/mysqldump --verbose --socket="$MYSQL_SOCKET_PATH" --databases "$db_name" \
-  | /usr/bin/gzip --best \
+  mysqldump --verbose --socket="$MYSQL_SOCKET_PATH" --databases "$db_name" \
+  | gzip --best \
   > "${MYSQL_BACKUP_STORAGE_DIR}/${db_name}/${db_name}.sql.gz"
 }
 
@@ -32,7 +32,7 @@ dump_databases() {
 rotate_backups() {
   _log 'Rotating database backups'
 
-  /usr/sbin/logrotate --verbose "$MYSQL_BACKUP_ROTATE_CONF_PATH"
+  logrotate --verbose "$MYSQL_BACKUP_ROTATE_CONF_PATH"
 }
 
 main() {
