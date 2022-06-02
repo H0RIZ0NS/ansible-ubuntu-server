@@ -1,0 +1,6 @@
+- name: Validate user-input variables
+  assert:
+    that:
+      - http_log_dir is string and http_log_dir|length
+      - http_log_name is string and http_log_name|length
+      - http_log_rotation_days is integer and http_log_rotation_days > 0

@@ -1,0 +1,10 @@
+{{ http_log_dir }}/{{ http_log_name }} {
+  daily
+  rotate {{ http_log_rotation_days }}
+  missingok
+  copytruncate
+  compress
+  shred
+  dateext
+  dateformat .%Y-%m-%d_%H:%M:%S
+}
