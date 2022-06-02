@@ -28,7 +28,7 @@
     state: present
   with_items: "{{ ([admin_user] + user_list)|selectattr('pubkey', 'defined') }}"
 
-- name: Make sure root SSH login is not directly possible anymore
+- name: Make root SSH login not directly possible anymore
   file:
     path: /root/.ssh/authorized_keys
     state: absent
