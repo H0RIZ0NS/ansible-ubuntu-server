@@ -12,7 +12,7 @@ It’s still a work in progress, but provides some good foundation for now.
 - [ ] Write the docs
 - [x] Allow any user to log in through pubkey authentication
 - [x] Streamline the backup workflow
-- [ ] Create an `http` role that would configure HTTP logs’ rotation
+- [x] Create an `http` role that would configure HTTP logs’ rotation
 - [ ] Check if some file modes (set for the `template` or `copy` modules for example) aren’t too restrictive
 - [ ] Harden the security even more (install Fail2ban, etc.)
 - [ ] Set up a CI workflow
