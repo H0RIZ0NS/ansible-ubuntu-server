@@ -5,19 +5,17 @@
     - name: Create the daily MySQL backup job
       cron:
         name: mysql
-        job: '{{ mysql_backup_script_path }} >> {{ backup_log_path }} 2>&1'
+        job: '{{ mysql_backup_script_path }} &>> {{ backup_log_path }}'
         hour: 2
         minute: 0
-        state: present
       when: is_mysql
 
     - name: Create the daily server backup job
       cron:
         name: server
-        job: '{{ backup_script_path }} >> {{ backup_log_path }} 2>&1'
+        job: '{{ backup_script_path }} &>> {{ backup_log_path }}'
         hour: 2
         minute: 30
-        state: present
 
     - name: Create a job to send the daily backup log to the root user
       cron:
@@ -28,7 +26,6 @@
           &> /dev/null
         hour: 3
         minute: 0
-        state: present
 
     - name: Create the weekly backup deep check job
       cron:
@@ -40,7 +37,6 @@
         weekday: 1
         hour: 3
         minute: 0
-        state: present
 
     - name: Set server-related environment variables used by the cron jobs
       cron:
@@ -51,6 +47,7 @@
         - { name: BACKUP_EXCLUDE_LIST_PATH, value: '{{ backup_exclude_list_path }}' }
         - { name: BACKUP_INCLUDE_LIST_PATH, value: '{{ backup_include_list_path }}' }
         - { name: BASH_ENV, value: /etc/environment }
+        - { name: SHELL, value: /usr/bin/bash }
 
     - name: Set MySQL-related environment variables used by the cron jobs
       cron:
@@ -67,6 +64,7 @@
     cron:
       cron_file: backup
       user: root
+      state: present
 
 - name: Make the backup crontab file private
   file:
