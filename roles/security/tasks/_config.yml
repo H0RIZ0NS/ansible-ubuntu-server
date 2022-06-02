@@ -9,7 +9,7 @@
       line: 'Port {{ server_ssh_port }}'
 
     - regexp: '^#?PermitRootLogin '
-      line: 'PermitRootLogin prohibit-password'
+      line: 'PermitRootLogin no'
 
     - regexp: '^#?X11Forwarding '
       line: 'X11Forwarding no'
