@@ -68,7 +68,7 @@
       cron_file: backup
       user: root
 
-- name: Make sure the crontab file is private
+- name: Make the backup crontab file private
   file:
     path: /etc/cron.d/backup
     mode: '0600'
