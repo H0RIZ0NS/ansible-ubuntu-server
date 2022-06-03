@@ -13,6 +13,7 @@ It’s still a work in progress, but provides some good foundation for now.
 - [x] Allow any user to log in through pubkey authentication
 - [x] Streamline the backup workflow
 - [x] Create an `http` role that would configure HTTP logs’ rotation
+- [ ] Store admin passwords in a vault use them as inventory variables
 - [ ] Check if some file modes (set for the `template` or `copy` modules for example) aren’t too restrictive
 - [ ] Harden the security even more (install Fail2ban, etc.)
 - [ ] Set up a CI workflow
