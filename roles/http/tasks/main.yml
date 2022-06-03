@@ -9,18 +9,14 @@
     - '{{ http_log_dir }}'
     - '{{ http_log_config_dir }}'
 
-- name: Copy the logrotate config file
+- name: Copy the config files
   template:
-    src: config/logrotate.conf.j2
-    dest: '{{ http_log_rotate_conf_path }}'
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
     mode: '0600'
+  with_items:
+    - src: config/logrotate.conf.j2
+      dest: '{{ http_log_logrotate_conf_path }}'
 
-- name: Create a cron job for the daily log rotation
-  cron:
-    cron_file: http-logs
-    user: root
-    name: logrotate
-    job: '/usr/sbin/logrotate {{ http_log_rotate_conf_path }} &> /dev/null'
-    hour: 23
-    minute: 59
-    state: present
+    - src: config/crontab.j2
+      dest: /etc/cron.d/http-logs

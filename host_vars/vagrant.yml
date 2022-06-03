@@ -5,7 +5,7 @@ installed_locales:
   - en_US.UTF-8
   - fr_FR.UTF-8
 
-admin_email: dummy@example.org
+admin_email_address: dummy@example.org
 
 user_list:
   - name: app

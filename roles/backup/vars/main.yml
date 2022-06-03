@@ -10,9 +10,11 @@ mysql_backup_script_path: /usr/local/bin/backup-mysql
 backup_config_dir: /etc/backup
 backup_include_list_path: '{{ backup_config_dir }}/include.list'
 backup_exclude_list_path: '{{ backup_config_dir }}/exclude.list'
+backup_logrotate_conf_path: '{{ backup_config_dir }}/logrotate.conf'
 
 backup_log_dir: /var/log/backup
 backup_log_path: '{{ backup_log_dir }}/backup.log'
 
 backup_script_path: /usr/local/bin/backup-server
 backup_check_script_path: /usr/local/bin/check-backup
+send_admin_email_script_path: /usr/local/bin/send-admin-email

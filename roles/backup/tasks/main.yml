@@ -4,5 +4,3 @@
   when: is_mysql
 
 - import_tasks: _server.yml
-
-- import_tasks: _cron.yml

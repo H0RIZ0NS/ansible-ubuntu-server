@@ -38,6 +38,7 @@
       - python3-apt
       - python3-pip
       - tar
+      - tree
       - unattended-upgrades
       - unzip
       - update-notifier-common
@@ -77,22 +78,19 @@
     - regexp: '^(?://)?\t"\$\{distro_id\}:\$\{distro_codename\}-updates";$'
       line: "\t\"${distro_id}:${distro_codename}-updates\";"
 
-    - regexp: '^(?://)?Unattended-Upgrade::Mail '
-      line: 'Unattended-Upgrade::Mail "{{ admin_email }}";'
+    - regexp: '^(?:// ?)?Unattended-Upgrade::Mail '
+      line: 'Unattended-Upgrade::Mail "{{ admin_email_address }}";'
 
-    - regexp: '^(?://)?Unattended-Upgrade::Sender '
-      line: 'Unattended-Upgrade::Sender "{{ root_email }}";'
+    - regexp: '^(?:// ?)?Unattended-Upgrade::Sender '
+      line: 'Unattended-Upgrade::Sender "{{ root_email_address }}";'
       insertafter: '^Unattended-Upgrade::Mail '
 
-    - regexp: '^(?://)?Unattended-Upgrade::MailReport '
+    - regexp: '^(?:// ?)?Unattended-Upgrade::MailReport '
       line: 'Unattended-Upgrade::MailReport "always";'
 
-    - regexp: '^(?://)?Unattended-Upgrade::Automatic-Reboot '
+    - regexp: '^(?:// ?)?Unattended-Upgrade::Automatic-Reboot '
       line: 'Unattended-Upgrade::Automatic-Reboot "true";'
 
-    - regexp: '^(?://)?Unattended-Upgrade::Automatic-Reboot-Time '
-      line: 'Unattended-Upgrade::Automatic-Reboot-Time "23:59";'
-
-    - regexp: '^(?://)?Unattended-Upgrade::Update-Days '
-      line: 'Unattended-Upgrade::Update-Days {"Sunday"};'
-      insertafter: '^Unattended-Upgrade::Automatic-Reboot-Time '
+    - regexp: '^(?:// ?)?Unattended-Upgrade::Update-Days '
+      line: 'Unattended-Upgrade::Update-Days {"Monday"};'
+      insertafter: '^Unattended-Upgrade::Automatic-Reboot '

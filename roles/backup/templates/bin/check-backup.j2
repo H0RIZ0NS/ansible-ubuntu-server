@@ -5,7 +5,15 @@ set -Eeu -o pipefail
 declare -r BACKUP_CREDENTIALS_PATH="${HOME}/.backup.creds"
 
 _log() {
-  printf "\n== ${1}\n\n"
+  printf "\n== ${1}…\n\n"
+}
+
+print_header() {
+  echo
+  echo '****************************************************************'
+  echo "== Backup repository’s deep check [$(date --rfc-3339='seconds')] =="
+  echo '****************************************************************'
+  echo
 }
 
 export_credentials() {
@@ -25,6 +33,7 @@ deep_check_repository() {
 }
 
 main() {
+  print_header
   export_credentials
   deep_check_repository
 }
