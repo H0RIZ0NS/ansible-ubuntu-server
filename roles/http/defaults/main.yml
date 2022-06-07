@@ -1,3 +1,4 @@
 http_log_dir: /var/log/http
 http_log_name: access.log
+
 http_log_rotation_days: 365

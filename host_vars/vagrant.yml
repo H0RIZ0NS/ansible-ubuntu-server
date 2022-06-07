@@ -30,15 +30,8 @@ mysql_users:
 
 backup_included_path:
   - /var/backups/mysql/
-  - /var/log/
-  - /home/vagrant/
+  - /var/log/http/
 
 backup_excluded_path:
-  - /var/log/journal/
-  - /var/log/syslog
-  - /var/log/lastlog
-  - .ansible/
-  - .cache/
-  - .ssh/
-  - .*_history
-  - .viminfo
+  - /var/backups/mysql/*.sql
+  - /var/log/http/access.log
