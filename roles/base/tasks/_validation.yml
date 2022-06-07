@@ -8,7 +8,7 @@
     that:
       - timezone_file_stat.stat.exists
       - installed_locales is iterable
-      - admin_email is string and admin_email|length
+      - admin_email_address is string and admin_email_address|length
 
 - name: Validate the locale list
   assert:

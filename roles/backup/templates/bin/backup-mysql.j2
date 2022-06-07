@@ -3,7 +3,7 @@
 set -Eeu -o pipefail
 
 _log() {
-  printf "\n== ${1}\n\n"
+  printf "\n== ${1}…\n\n"
 }
 
 _dump_db() {
@@ -22,6 +22,14 @@ _dump_db() {
   > "${MYSQL_BACKUP_STORAGE_DIR}/${db_name}/${db_name}.sql.gz"
 }
 
+print_header() {
+  echo
+  echo '**********************************************'
+  echo "== MySQL backup [$(date --rfc-3339='seconds')] =="
+  echo '**********************************************'
+  echo
+}
+
 dump_databases() {
   while read db_name; do
     _dump_db "$db_name"
@@ -36,6 +44,7 @@ rotate_backups() {
 }
 
 main() {
+  print_header
   dump_databases
   rotate_backups
 }

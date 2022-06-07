@@ -18,21 +18,20 @@
     state: present
   with_items: '{{ installed_locales }}'
 
+- name: Route e-mails sent to root to a custom address
+  lineinfile:
+    path: /etc/aliases
+    regexp: '^root:'
+    line: 'root: {{ admin_email_address }}'
+    state: present
+  notify:
+    - aliases_changed
+
 - name: Set the hostname for e-mail sending
   copy:
     dest: /etc/mailname
     content: "{{ server_hostname }}\n"
   notify: postfix_config_changed
-
-- name: Route e-mails sent to root to a custom address
-  lineinfile:
-    path: /etc/aliases
-    regexp: '^root:'
-    line: 'root: {{ admin_email }}'
-    state: present
-  notify:
-    - aliases_changed
-    - postfix_config_changed
 
 - name: Make Postfix a send-only relay
   lineinfile:
@@ -60,10 +59,10 @@
     insertafter: '^Defaults\tmail'
   with_items:
     - regexp: '^Defaults\tmailto='
-      line: "Defaults\tmailto=\"{{ admin_email }}\""
+      line: "Defaults\tmailto=\"{{ admin_email_address }}\""
 
     - regexp: '^Defaults\tmailfrom='
-      line: "Defaults\tmailfrom=\"{{ root_email }}\""
+      line: "Defaults\tmailfrom=\"{{ root_email_address }}\""
 
     - regexp: '^Defaults\tmailsub='
       line: "Defaults\tmailsub=\"Invalid sudo invocation\""

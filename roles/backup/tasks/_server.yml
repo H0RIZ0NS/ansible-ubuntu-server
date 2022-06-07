@@ -1,3 +1,6 @@
+- include_vars:
+    file: ../../base/vars/main.yml
+
 - name: Install Restic
   apt:
     name: restic
@@ -13,7 +16,7 @@
     - '{{ backup_config_dir }}'
     - '{{ backup_log_dir }}'
 
-- name: Copy the included/excluded path lists
+- name: Copy the backup config files
   template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
@@ -25,11 +28,11 @@
     - src: config/exclude.list.j2
       dest: '{{ backup_exclude_list_path }}'
 
-- name: Copy the logrotate config file
-  template:
-    src: config/logrotate.conf.j2
-    dest: /etc/logrotate.d/backup
-    mode: '0600'
+    - src: config/logrotate.conf.j2
+      dest: '{{ backup_logrotate_conf_path }}'
+
+    - src: config/crontab.j2
+      dest: /etc/cron.d/backup
 
 - name: Copy the backup scripts
   template:
@@ -42,3 +45,6 @@
 
     - src: bin/check-backup.j2
       dest: '{{ backup_check_script_path }}'
+
+    - src: bin/send-admin-email.j2
+      dest: '{{ send_admin_email_script_path }}'
