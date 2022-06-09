@@ -18,8 +18,7 @@ _dump_db() {
   _log "Dumping database <${db_name}>"
 
   mysqldump --verbose --socket="$MYSQL_SOCKET_PATH" --databases "$db_name" \
-  | gzip --best \
-  > "${MYSQL_BACKUP_STORAGE_DIR}/${db_name}/${db_name}.sql.gz"
+  > "${MYSQL_BACKUP_STORAGE_DIR}/${db_name}.sql"
 }
 
 print_header() {
@@ -27,7 +26,6 @@ print_header() {
   echo '**********************************************'
   echo "== MySQL backup [$(date --rfc-3339='seconds')] =="
   echo '**********************************************'
-  echo
 }
 
 dump_databases() {

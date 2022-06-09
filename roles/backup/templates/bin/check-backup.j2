@@ -13,7 +13,6 @@ print_header() {
   echo '****************************************************************'
   echo "== Backup repository’s deep check [$(date --rfc-3339='seconds')] =="
   echo '****************************************************************'
-  echo
 }
 
 export_credentials() {
@@ -29,6 +28,8 @@ export_credentials() {
 }
 
 deep_check_repository() {
+  _log 'Deep checking the repository’s integrity'
+
   restic check --read-data
 }
 

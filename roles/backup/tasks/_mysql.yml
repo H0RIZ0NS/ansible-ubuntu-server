@@ -19,13 +19,6 @@
     - src: config/mysql/rotate.conf.j2
       dest: '{{ mysql_backup_rotate_conf_path }}'
 
-- name: Create the database backup subdirectories
-  file:
-    path: '{{ mysql_backup_storage_dir }}/{{ item }}'
-    state: directory
-    mode: '0700'
-  with_items: '{{ mysql_databases }}'
-
 - name: Copy the backup script
   template:
     src: bin/backup-mysql.j2
