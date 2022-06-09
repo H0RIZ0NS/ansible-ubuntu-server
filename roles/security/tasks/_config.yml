@@ -4,6 +4,7 @@
     regexp: '{{ item.regexp }}'
     line: '{{ item.line }}'
     state: present
+  notify: sshd_config_changed
   with_items:
     - regexp: '^#?Port '
       line: 'Port {{ server_ssh_port }}'
@@ -13,4 +14,3 @@
 
     - regexp: '^#?X11Forwarding '
       line: 'X11Forwarding no'
-  notify: sshd_config_changed
