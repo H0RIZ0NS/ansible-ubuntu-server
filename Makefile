@@ -15,8 +15,8 @@ requirements: .requirements/ansible_collections/ .requirements/ansible_roles/
 
 .PHONY: apply
 apply:
-	ansible-playbook --diff --inventory=hosts.dev playbooks/stack.yml
+	ansible-playbook --diff --inventory=config/hosts.dev playbooks/stack.yml
 
 .PHONY: check
 check:
-	ansible-playbook --diff --check --inventory=hosts.dev playbooks/stack.yml
+	ansible-playbook --diff --check --inventory=config/hosts.dev playbooks/stack.yml
