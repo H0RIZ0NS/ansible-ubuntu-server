@@ -7,4 +7,4 @@ BASH_ENV='{{ backup_environment_conf_path }}'
 0 3 * * * root {{ backup_script_path }} &>> {{ backup_log_path }}
 0 4 * * * root {{ send_admin_email_script_path }} 'Backup log' < {{ backup_log_path }} &> /dev/null
 5 4 * * * root /usr/sbin/logrotate {{ backup_logrotate_conf_path }} &> /dev/null
-15 4 * * 1 root {{ backup_check_script_path }} | {{ send_admin_email_script_path }} 'Backup deep check log' &> /dev/null
+15 4 1 * * root {{ backup_check_script_path }} | {{ send_admin_email_script_path }} 'Backup deep check log' &> /dev/null
