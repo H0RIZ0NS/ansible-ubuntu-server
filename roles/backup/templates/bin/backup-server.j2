@@ -31,8 +31,8 @@ init_repository() {
   _log 'Checking if the repository is initialized'
 
   restic snapshots &> /dev/null \
-    && echo 'The repository is already initialized.' \
-    || restic init --verbose
+  && echo 'The repository is already initialized.' \
+  || restic init --verbose
 }
 
 perform_backup() {
