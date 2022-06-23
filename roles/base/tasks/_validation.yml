@@ -1,6 +1,6 @@
 - name: Check the stat of the theoretical timezone file
   stat:
-    path: '/usr/share/zoneinfo/{{ server_timezone }}'
+    path: /usr/share/zoneinfo/{{ server_timezone }}
   register: timezone_file_stat
 
 - name: Validate user-input variables

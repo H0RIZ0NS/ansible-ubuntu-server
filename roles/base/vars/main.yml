@@ -1,1 +1,1 @@
-root_email_address: 'root@{{ server_hostname }}'
+root_email_address: root@{{ server_hostname }}
