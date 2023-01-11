@@ -1,4 +1,10 @@
+########################################################################
+
 SHELL := /usr/bin/env bash -Eeu -o pipefail
+
+.DEFAULT_GOAL := up
+
+########################################################################
 
 .PHONY: up
 up: requirements
@@ -20,3 +26,5 @@ apply:
 .PHONY: check
 check:
 	ansible-playbook --diff --check --inventory=config/hosts.dev playbooks/stack.yml
+
+########################################################################
