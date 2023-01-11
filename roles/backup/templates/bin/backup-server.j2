@@ -48,7 +48,10 @@ perform_backup() {
 rotate_snapshots() {
   _log 'Purging old snapshots'
 
-  restic forget --verbose --prune --keep-within="${BACKUP_RETENTION_DAYS}d"
+  restic forget \
+    --verbose \
+    --prune \
+    --keep-within="${BACKUP_RETENTION_DAYS}d"
 }
 
 check_repository() {
