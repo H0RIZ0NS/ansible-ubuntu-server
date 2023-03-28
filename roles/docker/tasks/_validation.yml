@@ -1,13 +1,13 @@
-- include_vars:
-    file: ../../users/vars/main.yml
-
 - name: Validate user-input variables
   assert:
     that:
       - docker_users is iterable
+      - docker_serves_http is boolean
+      - docker_http_log_path is string and docker_http_log_path is match(globals.regexp.fs_path)
+      - docker_http_log_rotation_days is integer and docker_http_log_rotation_days > 0
 
 - name: Validate the Docker user list
   assert:
     that:
-      - item is string and item is match(linux_user_regexp)
+      - item is string and item is match(globals.regexp.username)
   with_items: '{{ docker_users }}'

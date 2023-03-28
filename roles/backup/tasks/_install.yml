@@ -1,0 +1,38 @@
+- name: Create a backup-specific SSH key pair
+  user:
+    name: '{{ backup_user }}'
+    generate_ssh_key: true
+    ssh_key_file: '.ssh/{{ backup_ssh_key_name }}'
+    ssh_key_type: rsa
+    ssh_key_bits: 4096
+    ssh_key_comment: ''
+  register: backup_ssh_key
+
+- name: Install required software
+  apt:
+    name:
+      - rdiff-backup
+      - backupninja
+    state: latest
+    cache_valid_time: '{{ globals.apt_cache_valid_time }}'
+
+- name: Tweak backupninja’s config
+  lineinfile:
+    path: /etc/backupninja.conf
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+  with_items:
+    - regexp: '^reportemail ='
+      line: 'reportemail = {{ admin_email_address }}'
+
+    - regexp: '^reportinfo ='
+      line: 'reportinfo = yes'
+
+- name: Copy the server backup config file
+  template:
+    src: config/server.conf.j2
+    dest: '{{ backup_config_dir }}/50-server.rdiff'
+    mode: '0600'
+  vars:
+    backup_ssh_key_path: '{{ backup_ssh_key.ssh_key_file }}'

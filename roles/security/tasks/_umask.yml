@@ -1,4 +1,4 @@
-- name: Enforce a secure umask value in PAM’s config
+- name: Enforce a secure umask in PAM’s config
   lineinfile:
     path: '{{ item }}'
     regexp: '^session optional(\s+)pam_umask\.so(?: umask=)?'
@@ -9,7 +9,7 @@
     - /etc/pam.d/common-session
     - /etc/pam.d/common-session-noninteractive
 
-- name: Enforce a secure umask value in /etc/login.defs
+- name: Enforce a secure umask in /etc/login.defs
   lineinfile:
     path: /etc/login.defs
     regexp: '^UMASK(\s+)'
@@ -17,11 +17,11 @@
     state: present
     backrefs: true
 
-- name: Enforce a secure default file mode for home directories
+- name: Enforce a secure default mode for home directories
   lineinfile:
     path: /etc/adduser.conf
     regexp: '^DIR_MODE='
-    line: 'DIR_MODE=0700'
+    line: 'DIR_MODE={{ secure_dir_mode }}'
     state: present
 
 - name: Find the existing home directories
@@ -30,10 +30,10 @@
     file_type: directory
   register: home_directories
 
-- name: Apply a secure file mode to the existing home directories
+- name: Apply a secure mode to the existing home directories
   file:
     path: '{{ item }}'
-    mode: '0700'
+    mode: '{{ secure_dir_mode }}'
   with_items: "{{ ['/root'] + home_directories.files|map(attribute='path')|list }}"
 
 - name: Find the existing user dotfiles and skeleton files
@@ -45,7 +45,7 @@
     depth: 1
   register: user_dotfiles
 
-- name: Apply a secure file mode to the existing user dotfiles and skeleton files
+- name: Apply a secure mode to the existing user dotfiles and skeleton files
   file:
     path: '{{ item.path }}'
     mode: '{{ item.mode|apply_umask(secure_umask) }}'

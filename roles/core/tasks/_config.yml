@@ -1,0 +1,80 @@
+- name: Gather service facts
+  service_facts: ~
+
+- name: Set the server’s FQDN
+  hostname:
+    name: '{{ server_fqdn }}'
+    use: debian
+  notify: hostname_changed
+
+- name: Set the server’s timezone
+  timezone:
+    name: '{{ server_timezone }}'
+  notify: time_config_changed
+
+- name: Enable NTP sync
+  command: timedatectl set-ntp 1
+  when: ansible_facts.services['systemd-timesyncd.service'].state|default(omit) != 'running'
+  notify: time_config_changed
+
+- name: Install the required locales
+  locale_gen:
+    name: '{{ item }}'
+    state: present
+  with_items: '{{ installed_locales }}'
+
+- name: Route e-mails sent to root to a custom address
+  lineinfile:
+    path: /etc/aliases
+    regexp: '^root:'
+    line: 'root: {{ admin_email_address }}'
+    state: present
+  notify: aliases_changed
+
+- name: Use the system’s hostname as Postfix hostname
+  file:
+    src: /etc/hostname
+    dest: /etc/mailname
+    state: link
+  notify: postfix_config_changed
+
+- name: Make Postfix a send-only relay
+  lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+  with_items:
+    - regexp: '^myhostname ='
+      line: 'myhostname = {{ server_fqdn }}'
+
+    - regexp: '^mydestination ='
+      line: 'mydestination = $myhostname, localhost.localdomain, localhost'
+
+    - regexp: '^inet_interfaces ='
+      line: 'inet_interfaces = loopback-only'
+  notify: postfix_config_changed
+
+- name: Tweak sudo’s e-mail alerting
+  lineinfile:
+    path: /etc/sudoers
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+    insertafter: '^Defaults\tmail'
+  with_items:
+    - regexp: '^Defaults\tmailfrom='
+      line: "Defaults\tmailfrom=\"{{ root_email_address }}\""
+
+    - regexp: '^Defaults\tmailto='
+      line: "Defaults\tmailto=\"{{ admin_email_address }}\""
+
+    - regexp: '^Defaults\tmailsub='
+      line: "Defaults\tmailsub=\"Invalid sudo attempt\""
+
+- name: Prevent the deletion of non-empty groups
+  lineinfile:
+    path: /etc/deluser.conf
+    regexp: '^ONLY_IF_EMPTY ='
+    line: 'ONLY_IF_EMPTY = 1'
+    state: present

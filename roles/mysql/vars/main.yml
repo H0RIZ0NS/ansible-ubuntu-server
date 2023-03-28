@@ -1,6 +1,8 @@
-mysql_database_regexp: '^[a-z0-9_-]{1,64}$'
-mysql_user_regexp: '^[a-z0-9_-]{1,32}$'
+mysql_regexp:
+  database: '^[a-z0-9_-]{1,64}$'
+  username: '^[a-z0-9_-]{1,32}$'
+
+mysqldump_config_file_path: /etc/mysql/conf.d/mysqldump.cnf
 
 mysql_socket_path: /var/run/mysqld/mysqld.sock
-
 mysql_password_path_template: '{{ local_password_dir }}/mysql.%s@{{ inventory_hostname }}.pass'

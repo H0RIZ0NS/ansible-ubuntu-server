@@ -1,0 +1,23 @@
+output_as_info = yes
+
+[source]
+
+label = {{ server_fqdn }}
+type = local
+keep = {{ backup_retention_days }}
+
+{% for path in backup_included_paths %}
+include = {{ path }}
+{% endfor %}
+
+{% for path in backup_excluded_paths %}
+exclude = {{ path }}
+{% endfor %}
+
+[dest]
+
+type = remote
+host = {{ backup_remote_host }}
+user = {{ backup_remote_user }}
+directory = {{ backup_remote_dir }}
+sshoptions = -o IdentityFile={{ backup_ssh_key_path }}

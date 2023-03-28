@@ -1,0 +1,9 @@
+ansible_host: 127.0.0.1
+ansible_user: vagrant
+ansible_become: true
+
+server_timezone: Europe/Paris
+admin_email_address: dummy@example.org
+
+admin_user:
+  name: ubuntu

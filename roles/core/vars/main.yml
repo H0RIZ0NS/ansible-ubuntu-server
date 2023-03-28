@@ -1,0 +1,35 @@
+essential_packages:
+  - apt-transport-https
+  - bash-completion
+  - bzip2
+  - ca-certificates
+  - curl
+  - gnupg
+  - gzip
+  - lsb-release
+  - mailutils
+  - make
+  - openssh-client
+  - openssh-server
+  - python3
+  - python3-pip
+  - software-properties-common
+  - tar
+  - tree
+  - tzdata
+  - unattended-upgrades
+  - unzip
+  - update-notifier-common
+  - vim
+
+bloat_packages:
+  - snapd
+  - ufw
+
+essential_python_packages:
+  - pip
+  - python-apt
+  - setuptools
+  - virtualenv
+
+root_email_address: root@{{ server_fqdn }}

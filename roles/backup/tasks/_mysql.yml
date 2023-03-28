@@ -1,26 +1,8 @@
-- name: Create the required directories
-  file:
-    path: '{{ item }}'
-    state: directory
-    mode: '0700'
-  with_items:
-    - '{{ mysql_backup_config_dir }}'
-    - '{{ mysql_backup_storage_dir }}'
+- include_vars:
+    file: ../../mysql/vars/main.yml
 
-- name: Copy the backup config files
+- name: Copy the MySQL backup config file
   template:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
+    src: config/mysql.conf.j2
+    dest: '{{ backup_config_dir }}/20-mysql.mysql'
     mode: '0600'
-  with_items:
-    - src: config/mysql/databases.list.j2
-      dest: '{{ mysql_database_list_path }}'
-
-    - src: config/mysql/rotate.conf.j2
-      dest: '{{ mysql_backup_rotate_conf_path }}'
-
-- name: Copy the backup script
-  template:
-    src: bin/backup-mysql.j2
-    dest: '{{ mysql_backup_script_path }}'
-    mode: '0700'

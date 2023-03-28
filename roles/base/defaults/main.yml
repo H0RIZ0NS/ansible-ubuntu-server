@@ -1,7 +1,0 @@
-server_timezone: Etc/UTC
-server_hostname: '{{ ansible_fqdn }}'
-
-installed_locales:
-  - en_US.UTF-8
-
-admin_email_address: ~

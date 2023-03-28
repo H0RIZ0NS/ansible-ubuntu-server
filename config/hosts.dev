@@ -1,13 +1,15 @@
-vagrant
+vagrant.dev
+vagrant-backup.dev
+
+[dev]
+vagrant.dev
+vagrant-backup.dev
 
 [docker]
-vagrant
-
-[http]
-vagrant
+vagrant.dev
 
 [mysql]
-vagrant
+vagrant.dev
 
 [backup]
-vagrant
+vagrant.dev

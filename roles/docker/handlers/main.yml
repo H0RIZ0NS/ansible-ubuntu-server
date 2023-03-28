@@ -1,0 +1,6 @@
+- name: Require a system reboot
+  listen: docker_users_added
+  file:
+    path: /var/run/reboot-required
+    state: touch
+    mode: '0644'

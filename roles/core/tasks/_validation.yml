@@ -1,0 +1,12 @@
+- name: Validate user-input variables
+  assert:
+    that:
+      - server_timezone is string and server_timezone is match(globals.regexp.timezone)
+      - installed_locales is iterable
+      - admin_email_address is string and admin_email_address is match(globals.regexp.email_address)
+
+- name: Validate the locale list
+  assert:
+    that:
+      - item is string and item is match(globals.regexp.locale)
+  with_items: '{{ installed_locales }}'
