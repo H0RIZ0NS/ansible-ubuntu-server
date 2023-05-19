@@ -1,6 +1,10 @@
+- include_vars:
+    file: ../../_globals/vars/main.yml
+    name: globals
+
 - import_tasks: _validation.yml
 
-- import_tasks: _mysql.yml
-  when: is_mysql
+- import_tasks: _install.yml
 
-- import_tasks: _server.yml
+- import_tasks: _mysql.yml
+  when: has_mysql

@@ -7,7 +7,6 @@
   assert:
     that:
       - item is mapping
-      - item.name is defined and item.name is string and item.name is match(linux_user_regexp)
-      - item.uid is defined and item.uid is integer and item.uid >= 1000
-      - item.pubkey is not defined or (item.pubkey is string and item.pubkey|length)
+      - item.name is defined and item.name is string and item.name is match(globals.regexp.username)
+      - item.authorized_key is not defined or (item.authorized_key is string and item.authorized_key is match(globals.regexp.ssh_key))
   with_items: '{{ [admin_user] + user_list }}'

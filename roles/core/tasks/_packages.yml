@@ -1,0 +1,64 @@
+- name: Disable APT backports
+  replace:
+    path: /etc/apt/sources.list
+    regexp: '^(deb .+ {{ ansible_distribution_release }}-backports )'
+    replace: '# \1'
+  register: source_list
+
+- name: Update the package cache if needed
+  apt:
+    update_cache: true
+  when: source_list is changed
+
+- name: Remove some bloat
+  apt:
+    name: '{{ bloat_packages }}'
+    state: absent
+
+- name: Upgrade installed packages (+ clean up unused packages)
+  apt:
+    upgrade: safe
+    autoclean: true
+    autoremove: true
+    cache_valid_time: '{{ globals.apt_cache_valid_time }}'
+
+- name: Install/upgrade some essential packages
+  apt:
+    name: '{{ essential_packages }}'
+    state: latest
+    cache_valid_time: '{{ globals.apt_cache_valid_time }}'
+
+- name: Install/upgrade some essential Python packages
+  pip:
+    name: '{{ essential_python_packages }}'
+    state: latest
+
+- name: Periodically autoclean the package cache
+  lineinfile:
+    path: /etc/apt/apt.conf.d/10periodic
+    regexp: '^APT::Periodic::AutocleanInterval '
+    line: 'APT::Periodic::AutocleanInterval "7";'
+    state: present
+
+- name: Tweak unattended upgrades’ config
+  template:
+    src: config/50unattended-upgrades
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    mode: '0644'
+
+- name: Duplicate the apt-daily-upgrade.timer systemd fragment
+  copy:
+    remote_src: true
+    src: /lib/systemd/system/apt-daily-upgrade.timer
+    dest: /etc/systemd/system/apt-daily-upgrade.timer
+    force: false
+    mode: preserve
+
+- name: Change the time at which unattended upgrades run
+  lineinfile:
+    path: /etc/systemd/system/apt-daily-upgrade.timer
+    regexp: '^OnCalendar='
+    line: 'OnCalendar=*-*-* 5:00'
+    state: present
+    insertafter: '^\[Timer\]$'
+  notify: systemd_unit_changed

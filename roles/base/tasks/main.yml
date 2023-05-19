@@ -1,5 +1,0 @@
-- import_tasks: _validation.yml
-
-- import_tasks: _packages.yml
-
-- import_tasks: _config.yml

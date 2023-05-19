@@ -1,3 +1,7 @@
+- include_vars:
+    file: ../../_globals/vars/main.yml
+    name: globals
+
 - import_tasks: _validation.yml
 
 - name: Install a Python MySQL client (Ansible dependency)
@@ -9,12 +13,12 @@
   apt:
     name: mysql-server-8.0
     state: latest
-    cache_valid_time: 3600
+    cache_valid_time: '{{ globals.apt_cache_valid_time }}'
 
-- name: Copy the custom mysqldump config file
+- name: Copy the mysqldump config file
   copy:
     src: config/mysqldump.cnf
-    dest: /etc/mysql/conf.d/mysqldump.cnf
+    dest: '{{ mysqldump_config_file_path }}'
     mode: '0644'
 
 - name: Enable and start the MySQL service
@@ -50,5 +54,5 @@
     line: 'bind-address\1= 0.0.0.0'
     state: present
     backrefs: true
-  when: make_mysql_public
+  when: mysql_is_public
   notify: mysql_config_changed

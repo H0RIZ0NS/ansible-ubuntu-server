@@ -1,21 +1,5 @@
-is_mysql: "{{ 'mysql' in group_names }}"
+has_mysql: "{{ 'mysql' in group_names }}"
 
-mysql_backup_config_dir: '{{ backup_config_dir }}/mysql'
-mysql_database_list_path: '{{ mysql_backup_config_dir }}/databases.list'
-mysql_backup_rotate_conf_path: '{{ mysql_backup_config_dir }}/rotate.conf'
-
-mysql_backup_storage_dir: /var/backups/mysql
-mysql_backup_script_path: /usr/local/bin/backup-mysql
-
-backup_config_dir: /etc/backup
-backup_environment_conf_path: '{{ backup_config_dir }}/environment.bash'
-backup_include_list_path: '{{ backup_config_dir }}/include.list'
-backup_exclude_list_path: '{{ backup_config_dir }}/exclude.list'
-backup_logrotate_conf_path: '{{ backup_config_dir }}/logrotate.conf'
-
-backup_log_dir: /var/log/backup
-backup_log_path: '{{ backup_log_dir }}/backup.log'
-
-backup_script_path: /usr/local/bin/backup-server
-backup_check_script_path: /usr/local/bin/check-backup
-send_admin_email_script_path: /usr/local/bin/send-admin-email
+backup_config_dir: /etc/backup.d
+backup_user: root
+backup_ssh_key_name: backup.id_rsa

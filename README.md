@@ -1,17 +1,13 @@
-<h1 align="center"><img src=".github/img/ansible-stack.png" alt="Ansible Stack"/></h1>
+<h2 align="center"><img src=".github/img/ansible-stack.png" alt="Ansible Stack"/></h2>
 
-This is an Ansible stack that can be used to provision servers on the Interwebs.
-It’s still a work in progress, but provides some good foundation for now.
+This is a collection of Ansible roles and their standard playbook
+implementation, aiming at facilitating the provisioning of Ubuntu LTS servers
+that provide typical Internet services (Apache, MySQL, Docker deployment, etc.)
 
-## Docs
+This project is still very much a work in progress, but offers some good
+foundation for now.
 
-![Soon…](.github/img/soon.jpg)
+### TODO
 
-## TODO
-
-- [ ] Write the docs
-- [x] Allow any user to log in through pubkey authentication
-- [x] Streamline the backup workflow
-- [x] Create an `http` role that would configure HTTP logs’ rotation
-- [ ] Check if some file modes (set for the `template` or `copy` modules for example) aren’t too restrictive
 - [ ] Set up a CI workflow
+- [ ] Write the docs

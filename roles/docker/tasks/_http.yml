@@ -1,0 +1,23 @@
+- name: Create the Docker HTTP log directory
+  file:
+    path: '{{ docker_http_log_path|dirname }}'
+    state: directory
+    mode: '0700'
+
+- name: Create the Docker HTTP config directory
+  file:
+    path: '{{ docker_http.logrotate_conf_path|dirname }}'
+    state: directory
+    mode: '0755'
+
+- name: Copy the Docker HTTP logrotate config files
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '0644'
+  with_items:
+    - src: config/http/logrotate.conf.j2
+      dest: '{{ docker_http.logrotate_conf_path }}'
+
+    - src: config/http/crontab.j2
+      dest: '{{ docker_http.crontab_path }}'

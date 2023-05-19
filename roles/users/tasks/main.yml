@@ -1,41 +1,34 @@
+- include_vars:
+    file: ../../_globals/vars/main.yml
+    name: globals
+
 - import_tasks: _validation.yml
 
 - name: Create the admin user
   user:
     name: '{{ admin_user.name }}'
     state: present
-    uid: '{{ admin_user.uid }}'
-    password: "{{ lookup('password', linux_password_path_template|format(admin_user.name) + ' encrypt=sha512_crypt') }}"
+    password: "{{ lookup('password', user_password_path_template|format(admin_user.name) + ' encrypt=sha512_crypt') }}"
     update_password: on_create
-    groups: sudo
-    append: true
     shell: /usr/bin/bash
+    comment: ''
+    groups:
+      - sudo
+  notify: admin_user_created
 
 - name: Create the regular users
   user:
     name: '{{ item.name }}'
     state: present
-    uid: '{{ item.uid }}'
-    password: "{{ lookup('password', linux_password_path_template|format(item.name) + ' encrypt=sha512_crypt') }}"
+    password: "{{ lookup('password', user_password_path_template|format(item.name) + ' encrypt=sha512_crypt') }}"
     update_password: on_create
     shell: /usr/bin/bash
+    comment: ''
   with_items: '{{ user_list }}'
 
-- name: Allow public key authentication if required
+- name: Allow public key authentication if specified
   authorized_key:
     user: '{{ item.name }}'
-    key: '{{ item.pubkey }}'
+    key: '{{ item.authorized_key }}'
     state: present
-  with_items: "{{ ([admin_user] + user_list)|selectattr('pubkey', 'defined') }}"
-
-- name: Make root SSH login not directly possible anymore
-  file:
-    path: /root/.ssh/authorized_keys
-    state: absent
-
-- name: Prevent the deletion of non-empty groups
-  lineinfile:
-    path: /etc/deluser.conf
-    regexp: '^ONLY_IF_EMPTY ='
-    line: 'ONLY_IF_EMPTY = 1'
-    state: present
+  with_items: "{{ ([admin_user] + user_list)|selectattr('authorized_key', 'defined') }}"

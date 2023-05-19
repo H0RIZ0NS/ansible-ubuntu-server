@@ -1,0 +1,17 @@
+Unattended-Upgrade::Update-Days {"Monday"};
+
+Unattended-Upgrade::Allowed-Origins {
+	"${distro_id}:${distro_codename}";
+	"${distro_id}:${distro_codename}-security";
+	"${distro_id}ESMApps:${distro_codename}-apps-security";
+	"${distro_id}ESM:${distro_codename}-infra-security";
+	"${distro_id}:${distro_codename}-updates";
+};
+
+Unattended-Upgrade::DevRelease "auto";
+
+Unattended-Upgrade::Sender "{{ root_email_address }}";
+Unattended-Upgrade::Mail "{{ admin_email_address }}";
+Unattended-Upgrade::MailReport "always";
+
+Unattended-Upgrade::Automatic-Reboot "true";

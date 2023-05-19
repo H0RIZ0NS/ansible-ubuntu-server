@@ -1,0 +1,35 @@
+- name: Add Docker’s PPA key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Register Docker’s PPA
+  apt_repository:
+    repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable'
+    filename: docker
+    mode: '0644'
+    state: present
+  register: docker_repository
+
+- name: Update the package cache if needed
+  apt:
+    update_cache: true
+  when: docker_repository is changed
+
+- name: Install Docker CE
+  apt:
+    name:
+      - containerd.io
+      - docker-ce
+      - docker-ce-cli
+      - docker-compose-plugin
+    state: latest
+    cache_valid_time: '{{ globals.apt_cache_valid_time }}'
+
+- name: Allow access to the Docker socket by some users
+  user:
+    name: '{{ item }}'
+    groups: docker
+    append: true
+  with_items: '{{ docker_users }}'
+  notify: docker_users_added

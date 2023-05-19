@@ -1,0 +1,3 @@
+docker_http:
+  logrotate_conf_path: /etc/http/logrotate.conf
+  crontab_path: /etc/cron.d/http

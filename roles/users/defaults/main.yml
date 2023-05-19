@@ -1,5 +1,4 @@
 admin_user:
   name: manager
-  uid: 9999
 
 user_list: []

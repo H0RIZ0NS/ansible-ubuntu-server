@@ -1,4 +1,4 @@
-import typing as t
+from typing import Callable
 
 
 def apply_umask(base_mode: str, umask_value: str) -> str:
@@ -6,7 +6,7 @@ def apply_umask(base_mode: str, umask_value: str) -> str:
 
 
 class FilterModule:
-    def filters(self) -> dict[str, t.Callable]:
+    def filters(self) -> dict[str, Callable]:
         return {
             'apply_umask': apply_umask,
         }

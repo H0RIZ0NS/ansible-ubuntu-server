@@ -1,0 +1,20 @@
+- name: Disable root login
+  listen: admin_user_created
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin '
+    line: 'PermitRootLogin no'
+    state: present
+  notify: root_login_disabled
+
+- name: Delete root’s authorized_keys file
+  listen: root_login_disabled
+  file:
+    path: /root/.ssh/authorized_keys
+    state: absent
+
+- name: Restart sshd
+  listen: root_login_disabled
+  service:
+    name: ssh
+    state: restarted
