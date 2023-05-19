@@ -11,5 +11,8 @@ vagrant.dev
 [mysql]
 vagrant.dev
 
+[apache_php]
+vagrant.dev
+
 [backup]
 vagrant.dev

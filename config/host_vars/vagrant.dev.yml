@@ -29,6 +29,8 @@ mysql_users:
       - db1
       - db2
 
+php_version: 7
+
 backup_included_paths:
   - /var/backups/mysql/
   - /var/log/http/

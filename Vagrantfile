@@ -11,6 +11,7 @@ Vagrant.configure(2) do |config|
   config.vm.define :default, primary: true do |default|
     default.vm.network :private_network, name: 'vboxnet0', ip: '192.168.56.2'
     default.vm.network :forwarded_port, id: 'ssh', host: 2222, guest: 22
+    default.vm.network :forwarded_port, id: 'http', host: 8080, guest: 80
   end
 
   config.vm.define :backup, autostart: false do |backup|
