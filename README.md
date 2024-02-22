@@ -13,5 +13,6 @@ foundation for now.
 
 ## TODO
 
+- [ ] Maybe restrict user access through `sshd`’s `AllowUsers` config directive
 - [ ] Set up a CI workflow
 - [ ] Write the docs
