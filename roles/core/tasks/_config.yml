@@ -72,7 +72,7 @@
     - regexp: '^Defaults\tmailsub='
       line: "Defaults\tmailsub=\"Invalid sudo attempt\""
 
-- name: Prevent the deletion of non-empty groups
+- name: Prevent the deletion of non-empty user groups
   lineinfile:
     path: /etc/deluser.conf
     regexp: '^ONLY_IF_EMPTY ='
