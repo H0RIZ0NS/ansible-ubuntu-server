@@ -1,0 +1,4 @@
+- name: Validate user-input variables
+  assert:
+    that:
+      - php_major_version is integer and php_major_version in supported_php_versions.keys()

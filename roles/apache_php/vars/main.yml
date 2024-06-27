@@ -1,0 +1,5 @@
+supported_php_versions:
+  7: 7.4
+  8: 8.3
+
+php_minor_version: '{{ supported_php_versions[php_major_version] }}'

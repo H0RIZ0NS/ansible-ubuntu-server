@@ -29,6 +29,7 @@
   copy:
     dest: /etc/mailname
     content: '{{ ansible_fqdn }}'
+    mode: '0644'
   notify: postfix_config_changed
 
 - name: Make Postfix a send-only relay
