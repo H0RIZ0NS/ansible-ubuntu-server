@@ -27,6 +27,8 @@ mysql_users:
       - db1
       - db2
 
+php_version: 7 # TODO: Remove before merging
+
 backup_included_paths:
   - /var/backups/mysql/
   - /var/log/http/

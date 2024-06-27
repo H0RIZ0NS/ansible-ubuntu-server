@@ -1,0 +1,27 @@
+- include_vars:
+    file: ../../_globals/vars/main.yml
+    name: globals
+
+- import_tasks: _validation.yml
+
+- name: Register a custom PPA hosting multiple PHP versions
+  apt_repository:
+    repo: 'ppa:ondrej/php'
+    filename: php
+    mode: '0644'
+    state: present
+  register: php_repository
+
+- name: Update the package cache if needed
+  apt:
+    update_cache: true
+  when: php_repository is changed
+
+- name: Install Apache and PHP
+  apt:
+    name:
+      - apache2
+      - libapache2-mpm-itk
+      - 'php{{ actual_php_version }}'
+    state: latest
+    cache_valid_time: '{{ globals.apt_cache_valid_time }}'
