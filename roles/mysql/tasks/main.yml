@@ -44,6 +44,7 @@
     password: "{{ lookup('password', mysql_password_path_template|format(item.name)) }}"
     update_password: on_create
     priv: "{{ item.owned_databases|map('regex_replace', '^(.+)$', '\\1.*:ALL')|join('/') }}"
+    column_case_sensitive: true # TODO: Remove when community.mysql v4.0.0 gets released
     login_unix_socket: '{{ mysql_socket_path }}'
   with_items: '{{ mysql_users }}'
 
