@@ -18,10 +18,10 @@ requirements: .requirements/ansible_collections/
 
 .PHONY: apply
 apply:
-	ansible-playbook --diff --inventory=config/hosts.dev playbooks/main.yml
+	ansible-playbook --diff --inventory=config/hosts.dev --limit vagrant.dev playbooks/main.yml
 
 .PHONY: check
 check:
-	ansible-playbook --diff --check --inventory=config/hosts.dev playbooks/main.yml
+	ansible-playbook --diff --check --inventory=config/hosts.dev --limit vagrant.dev playbooks/main.yml
 
 ########################################################################
