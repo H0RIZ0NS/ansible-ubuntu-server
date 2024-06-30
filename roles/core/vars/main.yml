@@ -4,6 +4,7 @@ essential_packages:
   - bzip2
   - ca-certificates
   - curl
+  - git
   - gnupg
   - gzip
   - lsb-release
@@ -21,6 +22,8 @@ essential_packages:
   - unzip
   - update-notifier-common
   - vim
+  - tmux
+  - wget
 
 bloat_packages:
   - snapd
