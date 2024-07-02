@@ -1,5 +1,3 @@
-has_mysql: "{{ 'mysql' in group_names }}"
-
 backup_config_dir: /etc/backup.d
 backup_user: root
 backup_ssh_key_name: backup.id_rsa
