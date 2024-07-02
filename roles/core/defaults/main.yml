@@ -1,5 +1,4 @@
 server_timezone: UTC
-server_fqdn: '{{ ansible_fqdn }}'
 
 installed_locales:
   - en_US.UTF-8

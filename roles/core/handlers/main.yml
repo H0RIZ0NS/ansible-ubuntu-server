@@ -1,10 +1,3 @@
-- name: Require a system reboot
-  listen: hostname_changed
-  file:
-    path: /var/run/reboot-required
-    state: touch
-    mode: '0644'
-
 - name: Sync the hardware clock from the system clock
   listen: time_config_changed
   command: hwclock --systohc

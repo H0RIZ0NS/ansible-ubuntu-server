@@ -35,4 +35,4 @@ essential_python_packages:
   - setuptools
   - virtualenv
 
-root_email_address: root@{{ server_fqdn }}
+root_email_address: root@{{ ansible_fqdn }}
