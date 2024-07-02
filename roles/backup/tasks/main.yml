@@ -7,4 +7,4 @@
 - import_tasks: _install.yml
 
 - import_tasks: _mysql.yml
-  when: "{{ 'mysql' in group_names }}"
+  when: "'mysql' in group_names"

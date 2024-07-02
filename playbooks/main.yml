@@ -14,10 +14,6 @@
       tags: [core]
 
     - import_role:
-        name: roles/security
-      tags: [security]
-
-    - import_role:
         name: roles/users
       tags: [users]
 
@@ -38,6 +34,12 @@
     - import_role:
         name: roles/backup
       tags: [backup]
+
+- hosts: all
+  tasks:
+    - import_role:
+        name: roles/security
+      tags: [security]
 
 - hosts: all
   tasks:
