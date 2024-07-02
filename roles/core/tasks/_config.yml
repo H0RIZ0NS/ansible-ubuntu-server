@@ -1,12 +1,6 @@
 - name: Gather service facts
   service_facts: ~
 
-- name: Set the server’s FQDN
-  hostname:
-    name: '{{ server_fqdn }}'
-    use: debian
-  notify: hostname_changed
-
 - name: Set the server’s timezone
   timezone:
     name: '{{ server_timezone }}'
@@ -32,10 +26,9 @@
   notify: aliases_changed
 
 - name: Use the system’s hostname as Postfix hostname
-  file:
-    src: /etc/hostname
+  copy:
     dest: /etc/mailname
-    state: link
+    content: '{{ ansible_fqdn }}'
   notify: postfix_config_changed
 
 - name: Make Postfix a send-only relay
@@ -46,7 +39,7 @@
     state: present
   with_items:
     - regexp: '^myhostname ='
-      line: 'myhostname = {{ server_fqdn }}'
+      line: 'myhostname = {{ ansible_fqdn }}'
 
     - regexp: '^mydestination ='
       line: 'mydestination = $myhostname, localhost.localdomain, localhost'
