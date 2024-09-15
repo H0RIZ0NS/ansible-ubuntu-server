@@ -1,12 +1,6 @@
-########################################################################
-
 .DEFAULT_GOAL := up
-
-SHELL := /usr/bin/env bash -Eeu -o pipefail
-
+export SHELL := /usr/bin/env bash -Eeu -o pipefail
 export ANSIBLE_INVENTORY := config/hosts.dev.ini
-
-########################################################################
 
 .PHONY: up
 up: requirements
@@ -25,5 +19,3 @@ apply:
 .PHONY: check
 check:
 	ansible-playbook --diff --check --limit vagrant.dev playbooks/main.yml
-
-########################################################################
