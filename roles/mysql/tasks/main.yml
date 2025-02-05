@@ -4,14 +4,11 @@
 
 - import_tasks: _validation.yml
 
-- name: Install a Python MySQL client (Ansible dependency)
-  pip:
-    name: PyMySQL
-    state: latest
-
-- name: Install MySQL Server 8.0
+- name: Install MySQL dependencies
   apt:
-    name: mysql-server-8.0
+    name:
+      - mysql-server-8.0
+      - python3-pymysql
     state: latest
     cache_valid_time: '{{ globals.apt_cache_valid_time }}'
 
@@ -52,8 +49,7 @@
   lineinfile:
     path: /etc/mysql/mysql.conf.d/mysqld.cnf
     regexp: '^bind-address(\s+)='
-    line: 'bind-address\1= 0.0.0.0'
+    line: "bind-address\\1= {{ '0.0.0.0' if mysql_is_public else '127.0.0.1' }}"
     state: present
     backrefs: true
-  when: mysql_is_public
   notify: mysql_config_changed

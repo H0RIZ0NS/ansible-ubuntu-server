@@ -16,7 +16,7 @@
   listen: postfix_config_changed
   service:
     name: postfix
-    state: restarted
+    state: reloaded
 
 - name: Reload systemd
   listen: systemd_unit_changed
