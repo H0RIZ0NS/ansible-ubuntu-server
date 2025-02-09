@@ -1,0 +1,22 @@
+apache_enabled_mods:
+  - rewrite
+
+apache_disabled_conf_partials:
+  - localized-error-pages
+  - serve-cgi-bin
+
+php_supported_versions:
+  7: 7.4
+  8: 8.3
+
+php_full_version: '{{ php_supported_versions[php_major_version] }}'
+php_apt_version: 'php{{ php_full_version }}'
+
+php_essential_exts:
+  - curl
+  - intl
+  - mbstring
+  - zip
+
+php_config_dir: '/etc/php/{{ php_installed_version }}'
+php_config_file_path: '{{ php_config_dir }}/php.ini'

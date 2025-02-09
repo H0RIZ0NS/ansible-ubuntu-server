@@ -34,11 +34,11 @@
   file:
     path: '{{ item }}'
     mode: '{{ secure_dir_mode }}'
-  with_items: "{{ ['/root'] + home_directories.files|map(attribute='path')|list }}"
+  with_items: "{{ ['/root'] + home_directories.files|map(attribute='path') }}"
 
 - name: Find the existing user dotfiles and skeleton files
   find:
-    paths: "{{ ['/root', '/etc/skel'] + home_directories.files|map(attribute='path')|list }}"
+    paths: "{{ ['/root', '/etc/skel'] + home_directories.files|map(attribute='path') }}"
     file_type: any
     patterns: .*
     hidden: true

@@ -29,6 +29,12 @@
         name: roles/mysql
       tags: [mysql]
 
+- hosts: apache_php
+  tasks:
+    - import_role:
+        name: roles/apache_php
+      tags: [apache_php]
+
 - hosts: backup
   tasks:
     - import_role:
