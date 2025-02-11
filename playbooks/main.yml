@@ -10,35 +10,35 @@
 - hosts: all
   tasks:
     - import_role:
-        name: roles/core
+        name: ../roles/core
       tags: [core]
 
     - import_role:
-        name: roles/users
+        name: ../roles/users
       tags: [users]
 
 - hosts: docker
   tasks:
     - import_role:
-        name: roles/docker
+        name: ../roles/docker
       tags: [docker]
 
 - hosts: mysql
   tasks:
     - import_role:
-        name: roles/mysql
+        name: ../roles/mysql
       tags: [mysql]
 
 - hosts: backup
   tasks:
     - import_role:
-        name: roles/backup
+        name: ../roles/backup
       tags: [backup]
 
 - hosts: all
   tasks:
     - import_role:
-        name: roles/security
+        name: ../roles/security
       tags: [security]
 
 - hosts: all

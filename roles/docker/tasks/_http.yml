@@ -6,7 +6,7 @@
 
 - name: Create the Docker HTTP config directory
   file:
-    path: '{{ docker_http.logrotate_conf_path|dirname }}'
+    path: '{{ docker_http_logrotate_conf_path|dirname }}'
     state: directory
     mode: '0755'
 
@@ -17,7 +17,7 @@
     mode: '0644'
   with_items:
     - src: config/http/logrotate.conf.j2
-      dest: '{{ docker_http.logrotate_conf_path }}'
+      dest: '{{ docker_http_logrotate_conf_path }}'
 
     - src: config/http/crontab.j2
-      dest: '{{ docker_http.crontab_path }}'
+      dest: '{{ docker_http_crontab_path }}'
