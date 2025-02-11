@@ -22,4 +22,4 @@
   assert:
     that:
       - item is string and item in mysql_databases
-  with_items: "{{ mysql_users|map(attribute='owned_databases')|list }}"
+  with_items: "{{ mysql_users|map(attribute='owned_databases') }}"

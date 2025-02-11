@@ -13,8 +13,9 @@
     path: /root/.ssh/authorized_keys
     state: absent
 
-- name: Restart sshd
+- name: Require a system reboot
   listen: root_login_disabled
-  service:
-    name: ssh
-    state: restarted
+  file:
+    path: /var/run/reboot-required
+    state: touch
+    mode: '0644'

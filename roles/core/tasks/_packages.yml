@@ -14,12 +14,14 @@
   apt:
     name: '{{ bloat_packages }}'
     state: absent
+    purge: true
 
 - name: Upgrade installed packages (+ clean up unused packages)
   apt:
     upgrade: safe
     autoclean: true
     autoremove: true
+    purge: true
     cache_valid_time: '{{ globals.apt_cache_valid_time }}'
 
 - name: Install/upgrade some essential packages
@@ -27,11 +29,6 @@
     name: '{{ essential_packages }}'
     state: latest
     cache_valid_time: '{{ globals.apt_cache_valid_time }}'
-
-- name: Install/upgrade some essential Python packages
-  pip:
-    name: '{{ essential_python_packages }}'
-    state: latest
 
 - name: Periodically autoclean the package cache
   lineinfile:
