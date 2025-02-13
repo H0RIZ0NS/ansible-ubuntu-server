@@ -1,8 +1,8 @@
 - name: Create a backup-specific SSH key pair
   user:
-    name: '{{ backup_user }}'
+    name: '{{ backup_local_user }}'
     generate_ssh_key: true
-    ssh_key_file: '.ssh/{{ backup_ssh_key_name }}'
+    ssh_key_file: '.ssh/{{ backup_local_identity_file }}'
     ssh_key_type: rsa
     ssh_key_bits: 4096
     ssh_key_comment: ''
@@ -31,8 +31,8 @@
 
 - name: Copy the server backup config file
   template:
-    src: config/server.conf.j2
-    dest: '{{ backup_config_dir }}/50-server.rdiff'
+    src: config/server.conf
+    dest: '{{ backup_local_config_dir }}/50-server.rdiff'
     mode: '0600'
   vars:
     backup_ssh_key_path: '{{ backup_ssh_key.ssh_key_file }}'

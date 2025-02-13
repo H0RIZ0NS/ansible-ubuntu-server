@@ -1,0 +1,37 @@
+- name: Route e-mails sent to root to a custom address
+  lineinfile:
+    path: /etc/aliases
+    regexp: '^root:'
+    line: 'root: {{ admin_email_address }}'
+    state: present
+  notify: aliases_changed
+
+- name: Use the system’s hostname as Postfix hostname
+  copy:
+    dest: /etc/mailname
+    content: "{{ ansible_fqdn }}\n"
+    mode: '0644'
+  notify: postfix_config_changed
+
+- name: Make Postfix a send-only relay
+  lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+  with_items:
+    - regexp: '^myhostname ='
+      line: 'myhostname = {{ ansible_fqdn }}'
+
+    - regexp: '^mydestination ='
+      line: 'mydestination = $myhostname, localhost.localdomain, localhost'
+
+    - regexp: '^inet_interfaces ='
+      line: 'inet_interfaces = loopback-only'
+  notify: postfix_config_changed
+
+- name: Tweak sudo’s e-mail alerts
+  template:
+    src: config/sudoers-mailing.conf
+    dest: /etc/sudoers.d/mailing
+    mode: '0440'

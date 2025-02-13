@@ -1,18 +1,6 @@
-- name: Disable APT backports
-  replace:
-    path: /etc/apt/sources.list
-    regexp: '^(deb .+ {{ ansible_distribution_release }}-backports )'
-    replace: '# \1'
-  register: source_list
-
-- name: Update the package cache if needed
-  apt:
-    update_cache: true
-  when: source_list is changed
-
 - name: Remove some bloat
   apt:
-    name: '{{ bloat_packages }}'
+    name: '{{ apt_packages_removed }}'
     state: absent
     purge: true
 
@@ -26,7 +14,7 @@
 
 - name: Install/upgrade some essential packages
   apt:
-    name: '{{ essential_packages }}'
+    name: '{{ apt_packages_installed }}'
     state: latest
     cache_valid_time: '{{ globals.apt_cache_valid_time }}'
 
@@ -39,11 +27,11 @@
 
 - name: Tweak unattended upgrades’ config
   template:
-    src: config/50unattended-upgrades
+    src: config/unattended-upgrades.conf
     dest: /etc/apt/apt.conf.d/50unattended-upgrades
     mode: '0644'
 
-- name: Duplicate the apt-daily-upgrade.timer systemd fragment
+- name: Override the apt-daily-upgrade.timer systemd fragment
   copy:
     remote_src: true
     src: /lib/systemd/system/apt-daily-upgrade.timer

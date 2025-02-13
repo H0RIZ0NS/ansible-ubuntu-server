@@ -58,7 +58,7 @@ apply_rule --append OUTPUT --match hashlimit --hashlimit-name UDP_OUTPUT_FLOOD -
 {% endif %}
 
 # Authorized INPUT requests
-apply_rule --append INPUT --protocol tcp --dport {{ server_ssh_port }} --jump ACCEPT # SSH
+apply_rule --append INPUT --protocol tcp --dport {{ globals.server_ssh_listening_port }} --jump ACCEPT # SSH
 
 # Authorized OUTPUT requests
 apply_rule --append OUTPUT --protocol icmp --jump ACCEPT # ICMP

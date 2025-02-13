@@ -2,14 +2,14 @@
   assert:
     that:
       - backup_retention_days is integer and backup_retention_days > 0
-      - backup_included_paths is iterable
-      - backup_excluded_paths is iterable
+      - backup_paths_included is iterable
+      - backup_paths_excluded is iterable
       - backup_remote_host is string and backup_remote_host is match(globals.regexp.hostname)
       - backup_remote_user is string and backup_remote_user is match(globals.regexp.username)
-      - backup_remote_dir is string and backup_remote_dir is match(globals.regexp.fs_path)
+      - backup_remote_target_dir is string and backup_remote_target_dir is match(globals.regexp.fs_path)
 
 - name: Validate the included/excluded path lists
   assert:
     that:
       - item is string and item is match(globals.regexp.fs_path)
-  with_items: '{{ backup_included_paths + backup_excluded_paths }}'
+  with_items: '{{ backup_paths_included + backup_paths_excluded }}'

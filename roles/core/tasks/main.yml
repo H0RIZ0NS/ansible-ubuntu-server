@@ -4,6 +4,12 @@
 
 - import_tasks: _validation.yml
 
+- import_tasks: _init.yml
+
 - import_tasks: _packages.yml
 
-- import_tasks: _config.yml
+- import_tasks: _mailing.yml
+
+- import_tasks: _users.yml
+
+- import_tasks: _umask.yml

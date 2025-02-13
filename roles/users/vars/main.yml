@@ -1,1 +1,0 @@
-user_password_path_template: '{{ local_password_dir }}/%s@{{ inventory_hostname }}.pass'

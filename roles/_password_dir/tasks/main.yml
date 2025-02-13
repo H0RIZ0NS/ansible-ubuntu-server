@@ -1,6 +1,6 @@
 - name: Create a local password storage directory
   local_action:
     module: file
-    path: '{{ local_password_dir }}'
+    path: '{{ password_dir_local_path }}'
     state: directory
     mode: '0700'
