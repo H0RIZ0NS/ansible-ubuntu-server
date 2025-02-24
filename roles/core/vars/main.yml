@@ -1,4 +1,4 @@
-apt_packages_installed:
+apt_installed_packages:
   - apt-transport-https
   - bash-completion
   - bzip2
@@ -30,7 +30,7 @@ apt_packages_installed:
   - tmux
   - wget
 
-apt_packages_removed:
+apt_removed_packages:
   - snapd
   - ufw
 

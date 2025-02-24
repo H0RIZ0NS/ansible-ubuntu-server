@@ -1,6 +1,6 @@
 - name: Remove some bloat
   apt:
-    name: '{{ apt_packages_removed }}'
+    name: '{{ apt_removed_packages }}'
     state: absent
     purge: true
 
@@ -14,7 +14,7 @@
 
 - name: Install/upgrade some essential packages
   apt:
-    name: '{{ apt_packages_installed }}'
+    name: '{{ apt_installed_packages }}'
     state: latest
     cache_valid_time: '{{ globals.apt_cache_valid_time }}'
 
