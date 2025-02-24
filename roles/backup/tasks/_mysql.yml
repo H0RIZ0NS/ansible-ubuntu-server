@@ -3,6 +3,6 @@
 
 - name: Copy the MySQL backup config file
   template:
-    src: config/mysql.conf.j2
-    dest: '{{ backup_config_dir }}/20-mysql.mysql'
+    src: config/mysql.conf
+    dest: '{{ backup_local_config_dir }}/20-mysql.mysql'
     mode: '0600'

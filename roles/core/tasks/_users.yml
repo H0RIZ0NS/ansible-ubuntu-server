@@ -1,0 +1,48 @@
+- name: Remove unsecure passwordless sudoer config
+  file:
+    path: /etc/sudoers.d/90-cloud-init-users
+    state: absent
+
+- name: Prevent the deletion of non-empty user groups
+  lineinfile:
+    path: /etc/deluser.conf
+    regexp: '^#?ONLY_IF_EMPTY ='
+    line: 'ONLY_IF_EMPTY = 1'
+    state: present
+
+- name: Create the admin user
+  user:
+    name: '{{ admin_user.name }}'
+    state: present
+    password: "{{ lookup('password', users_password_path_template|format(admin_user.name) + ' encrypt=sha512_crypt') }}"
+    update_password: on_create
+    shell: /usr/bin/bash
+    comment: ''
+    groups:
+      - adm
+      - sudo
+
+- name: Create the regular users
+  user:
+    name: '{{ item.name }}'
+    state: present
+    password: "{{ lookup('password', users_password_path_template|format(item.name) + ' encrypt=sha512_crypt') }}"
+    update_password: on_create
+    shell: /usr/bin/bash
+    comment: ''
+  with_items: '{{ users_list }}'
+
+- name: Allow public key authentication if specified
+  authorized_key:
+    user: '{{ item.name }}'
+    key: '{{ item.authorized_key }}'
+    state: present
+  with_items: "{{ ([admin_user] + users_list)|selectattr('authorized_key', 'defined') }}"
+
+- name: Disable root login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin '
+    line: 'PermitRootLogin no'
+    state: present
+  notify: root_login_disabled

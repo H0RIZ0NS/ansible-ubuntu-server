@@ -1,0 +1,60 @@
+- name: Enforce a secure umask in /etc/login.defs
+  lineinfile:
+    path: /etc/login.defs
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+    backrefs: true
+  with_items:
+    - regexp: '^#?UMASK(\s+)'
+      line: 'UMASK\g<1>{{ umask_secure_value }}'
+
+    - regexp: '^#?USERGROUPS_ENAB(\s+)'
+      line: 'USERGROUPS_ENAB\1no'
+
+- name: Enforce a secure default mode for home directories
+  lineinfile:
+    path: '{{ item.file_path }}'
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+    backrefs: true
+  with_items:
+    - file_path: /etc/login.defs
+      regexp: '^#?HOME_MODE(\s+)'
+      line: 'HOME_MODE\g<1>{{ umask_secure_dir_mode }}'
+
+    - file_path: /etc/adduser.conf
+      regexp: '^#?DIR_MODE='
+      line: 'DIR_MODE={{ umask_secure_dir_mode }}'
+
+    - file_path: /etc/adduser.conf
+      regexp: '^#?SYS_DIR_MODE='
+      line: 'SYS_DIR_MODE={{ umask_secure_dir_mode }}'
+
+- name: Find the existing home directories
+  find:
+    paths: /home
+    file_type: directory
+  register: home_directories
+
+- name: Apply the secure mode to the existing home directories
+  file:
+    path: '{{ item }}'
+    mode: '{{ umask_secure_dir_mode }}'
+  with_items: "{{ ['/root'] + home_directories.files|map(attribute='path') }}"
+
+- name: Find the existing user dotfiles and skeleton files
+  find:
+    paths: "{{ ['/root', '/etc/skel'] + home_directories.files|map(attribute='path') }}"
+    file_type: any
+    patterns: .*
+    hidden: true
+    depth: 1
+  register: user_dotfiles
+
+- name: Apply the secure mode to the existing user dotfiles and skeleton files
+  file:
+    path: '{{ item.path }}'
+    mode: '{{ item.mode|apply_umask(umask_secure_value) }}'
+  with_items: '{{ user_dotfiles.files }}'

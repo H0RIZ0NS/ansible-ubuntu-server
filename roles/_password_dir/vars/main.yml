@@ -1,1 +1,1 @@
-local_password_dir: /tmp/ansible-passwords
+password_dir_local_path: /tmp/ansible-passwords

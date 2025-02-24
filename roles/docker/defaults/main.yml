@@ -1,6 +1,5 @@
 docker_users: []
 
-docker_serves_http: false
-
+docker_http_enabled: false
 docker_http_log_path: /var/log/http/access.log
 docker_http_log_rotation_days: 365

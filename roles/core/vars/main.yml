@@ -1,9 +1,10 @@
-essential_packages:
+apt_packages_installed:
   - apt-transport-https
   - bash-completion
   - bzip2
   - ca-certificates
   - curl
+  - fake-hwclock
   - git
   - gnupg
   - gzip
@@ -24,12 +25,21 @@ essential_packages:
   - unattended-upgrades
   - unzip
   - update-notifier-common
+  - util-linux-extra
   - vim
   - tmux
   - wget
 
-bloat_packages:
+apt_packages_removed:
   - snapd
   - ufw
 
-root_email_address: root@{{ ansible_fqdn }}
+mailing_root_email_address: root@{{ ansible_fqdn }}
+
+users_password_path_template: '{{ password_dir_local_path }}/%s@{{ inventory_hostname }}.pass'
+
+umask_allowed_values:
+  - '027'
+  - '077'
+
+umask_secure_dir_mode: "{{ '0777'|apply_umask(umask_secure_value) }}"

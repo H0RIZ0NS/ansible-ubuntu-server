@@ -21,3 +21,16 @@
 - name: Reload systemd
   listen: systemd_unit_changed
   command: systemctl daemon-reload
+
+- name: Delete root’s authorized_keys file
+  listen: root_login_disabled
+  file:
+    path: /root/.ssh/authorized_keys
+    state: absent
+
+- name: Require a system reboot
+  listen: root_login_disabled
+  file:
+    path: /var/run/reboot-required
+    state: touch
+    mode: '0644'

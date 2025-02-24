@@ -3,6 +3,7 @@
     that:
       - mysql_databases is iterable
       - mysql_users is iterable
+      - mysql_is_public is boolean
 
 - name: Validate the database list
   assert:

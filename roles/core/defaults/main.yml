@@ -1,6 +1,13 @@
 server_timezone: UTC
 
-installed_locales:
+server_locales:
   - en_US.UTF-8
 
 admin_email_address: ~
+
+admin_user:
+  name: manager
+
+users_list: []
+
+umask_secure_value: '077'

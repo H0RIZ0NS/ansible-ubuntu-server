@@ -2,7 +2,7 @@
   assert:
     that:
       - docker_users is iterable
-      - docker_serves_http is boolean
+      - docker_http_enabled is boolean
       - docker_http_log_path is string and docker_http_log_path is match(globals.regexp.fs_path)
       - docker_http_log_rotation_days is integer and docker_http_log_rotation_days > 0
 

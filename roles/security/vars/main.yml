@@ -1,7 +1,0 @@
-allowed_umask_values:
-  - '027'
-  - '077'
-
-secure_dir_mode: "{{ '0777'|apply_umask(secure_umask) }}"
-
-firewall_script_path: /usr/local/bin/firewall

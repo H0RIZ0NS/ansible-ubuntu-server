@@ -1,2 +1,2 @@
-docker_http_logrotate_conf_path: /etc/http/logrotate.conf
-docker_http_crontab_path: /etc/cron.d/http
+docker_http_logrotate_config_path: /etc/http/logrotate.conf
+docker_http_logrotate_crontab_path: /etc/cron.d/http

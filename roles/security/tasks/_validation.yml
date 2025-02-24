@@ -1,7 +1,0 @@
-- name: Validate user-input variables
-  assert:
-    that:
-      - server_ssh_port is integer
-      - secure_umask is string and secure_umask is match('^(?:%s)$'|format(allowed_umask_values|join('|')))
-      - firewall_enabled is boolean
-      - firewall_flood_protection_enabled is boolean

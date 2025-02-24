@@ -1,7 +1,5 @@
 - name: Require a system reboot
-  listen:
-    - firewall_config_changed
-    - sshd_config_changed
+  listen: firewall_config_changed
   file:
     path: /var/run/reboot-required
     state: touch

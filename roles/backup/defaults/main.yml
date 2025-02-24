@@ -1,8 +1,8 @@
 backup_retention_days: 10
 
-backup_included_paths: []
-backup_excluded_paths: []
+backup_paths_included: []
+backup_paths_excluded: []
 
 backup_remote_host: ~
 backup_remote_user: backup
-backup_remote_dir: /var/backups
+backup_remote_target_dir: /var/backups

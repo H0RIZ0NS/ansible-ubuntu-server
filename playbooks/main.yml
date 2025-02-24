@@ -13,10 +13,6 @@
         name: ../roles/core
       tags: [core]
 
-    - import_role:
-        name: ../roles/users
-      tags: [users]
-
 - hosts: docker
   tasks:
     - import_role:
@@ -35,11 +31,11 @@
         name: ../roles/backup
       tags: [backup]
 
-- hosts: all
+- hosts: firewall
   tasks:
     - import_role:
-        name: ../roles/security
-      tags: [security]
+        name: ../roles/firewall
+      tags: [firewall]
 
 - hosts: all
   tasks:
