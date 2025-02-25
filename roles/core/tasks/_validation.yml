@@ -4,7 +4,7 @@
       - server_timezone is string and server_timezone is match(globals.regexp.timezone)
       - server_locales is iterable
       - admin_email_address is string and admin_email_address is match(globals.regexp.email_address)
-      - users_list is iterable
+      - user_list is iterable
       - umask_secure_value is string and umask_secure_value is match('^(?:%s)$'|format(umask_allowed_values|join('|')))
 
 - name: Validate the locale list
@@ -19,4 +19,4 @@
       - item is mapping
       - item.name is defined and item.name is string and item.name is match(globals.regexp.username)
       - item.authorized_key is not defined or (item.authorized_key is string and item.authorized_key is match(globals.regexp.ssh_key))
-  with_items: '{{ [admin_user] + users_list }}'
+  with_items: '{{ [admin_user] + user_list }}'
