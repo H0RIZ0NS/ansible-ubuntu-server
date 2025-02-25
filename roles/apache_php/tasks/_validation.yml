@@ -1,0 +1,19 @@
+- name: Validate user-input variables
+  assert:
+    that:
+      - apache_vhost_names is iterable
+      - apache_log_rotation_days is integer and apache_log_rotation_days > 0
+      - php_major_version is integer and php_major_version in php_supported_versions.keys()
+      - php_additional_extensions is iterable
+
+- name: Validate Apache’s virtual host names
+  assert:
+    that:
+      - item is string and item is match(globals.regexp.hostname)
+  with_items: '{{ apache_vhost_names }}'
+
+- name: Validate the PHP additional extensions’ list
+  assert:
+    that:
+      - item is string and item is match(apache_php_regexp.php_extension_name)
+  with_items: '{{ php_additional_extensions }}'

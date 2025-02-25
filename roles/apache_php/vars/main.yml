@@ -1,0 +1,26 @@
+apache_php_regexp:
+  php_extension_name: '^[\w\-]+$'
+
+apache_enabled_mods:
+  - rewrite
+
+apache_disabled_conf_partials:
+  - localized-error-pages
+  - serve-cgi-bin
+
+php_supported_versions:
+  5: 5.6
+  7: 7.4
+  8: 8.3
+
+php_full_version: '{{ php_supported_versions[php_major_version] }}'
+php_apt_version: 'php{{ php_full_version }}'
+
+php_default_extensions:
+  - curl
+  - intl
+  - mbstring
+  - zip
+
+php_config_dir: /etc/php
+php_config_file_path: '{{ php_config_dir }}/php.ini'

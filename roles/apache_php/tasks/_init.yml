@@ -1,0 +1,99 @@
+- name: Register a custom PPA for custom PHP versions
+  apt_repository:
+    repo: 'ppa:ondrej/php'
+    filename: php
+    mode: '0644'
+    state: present
+  register: php_repository
+
+- name: Update the package cache if needed
+  apt:
+    update_cache: true
+  when: php_repository is changed
+
+- name: Install Apache and PHP
+  apt:
+    name:
+      - apache2
+      - libapache2-mpm-itk
+      - '{{ php_apt_version }}'
+    state: latest
+    cache_valid_time: '{{ globals.apt_cache_valid_time }}'
+
+- name: Install PHP extensions
+  apt:
+    name: "{{ (php_default_extensions + php_additional_extensions)|map('regex_replace', '^', php_apt_version ~ '-') }}"
+    state: latest
+    cache_valid_time: '{{ globals.apt_cache_valid_time }}'
+
+- name: Enable some required Apache modules
+  command:
+    cmd: 'a2enmod {{ item }}'
+    creates: '/etc/apache2/mods-enabled/{{ item }}.load'
+  with_items: '{{ apache_enabled_mods }}'
+  notify: apache_config_changed
+
+- name: Disable some unneeded or unsecure Apache config partials
+  command:
+    cmd: 'a2disconf {{ item }}'
+    removes: '/etc/apache2/conf-enabled/{{ item }}.conf'
+  with_items: '{{ apache_disabled_conf_partials }}'
+  notify: apache_config_changed
+
+- name: Harden Apache’s security settings
+  lineinfile:
+    path: /etc/apache2/conf-available/security.conf
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    state: present
+  with_items:
+    - regexp: '^ServerTokens '
+      line: 'ServerTokens Prod'
+
+    - regexp: '^ServerSignature '
+      line: 'ServerSignature Off'
+  notify: apache_config_changed
+
+- name: Enable UTF-8 as default Apache charset
+  lineinfile:
+    path: /etc/apache2/conf-available/charset.conf
+    regexp: '^#?AddDefaultCharset '
+    line: 'AddDefaultCharset UTF-8'
+    state: present
+  notify: apache_config_changed
+
+- name: Copy a custom Apache config partial
+  copy:
+    src: config/apache2.conf
+    dest: /etc/apache2/conf-available/custom.conf
+    mode: '0644'
+  notify: apache_custom_config_added
+
+- name: Create log subdirectories for Apache’s virtual hosts
+  file:
+    path: '/var/log/apache2/{{ item }}'
+    state: directory
+    mode: '0750'
+    group: adm
+  with_items: '{{ apache_vhost_names }}'
+
+- name: Delete the default Apache logrotate config file
+  file:
+    path: /etc/logrotate.d/apache2
+    state: absent
+
+- name: Copy a custom PHP config file
+  copy:
+    src: config/php.ini
+    dest: '{{ php_config_file_path }}'
+    mode: '0644'
+
+- name: Link the original PHP config files to the custom one
+  file:
+    path: '{{ php_config_dir }}/{{ php_full_version }}/{{ item }}/php.ini'
+    src: '{{ php_config_file_path }}'
+    state: link
+    force: true
+  with_items:
+    - cli
+    - apache2

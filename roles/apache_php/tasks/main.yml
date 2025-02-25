@@ -10,7 +10,6 @@
     name: ../roles/_http_logrotate
   vars:
     http_log_paths:
-      - '{{ docker_http_log_path }}'
-    http_logrotate_create_log_dirs: true
-    http_log_rotation_days: '{{ docker_http_log_rotation_days }}'
-  when: docker_http_enabled
+      - /var/log/apache2/*.log
+      - /var/log/apache2/*/*.log
+    http_log_rotation_days: '{{ apache_log_rotation_days }}'

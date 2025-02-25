@@ -1,0 +1,1 @@
+http_logrotate_config_path: /etc/http/logrotate.conf

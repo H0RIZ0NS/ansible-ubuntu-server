@@ -1,0 +1,32 @@
+- include_vars:
+    file: ../../_globals/vars/main.yml
+    name: globals
+
+- import_tasks: _validation.yml
+
+- name: Create the HTTP log directories if required
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: '0750'
+    group: adm
+  with_items: "{{ http_log_paths|map('dirname') }}"
+  when: http_logrotate_create_log_dirs
+
+- name: Create the HTTP logrotate config directory
+  file:
+    path: '{{ http_logrotate_config_path|dirname }}'
+    state: directory
+    mode: '0755'
+
+- name: Copy the HTTP logrotate config file
+  template:
+    src: config/logrotate.conf
+    dest: '{{ http_logrotate_config_path }}'
+    mode: '0644'
+
+- name: Copy the HTTP logrotate crontab file
+  template:
+    src: config/crontab
+    dest: /etc/cron.d/http
+    mode: '0644'
