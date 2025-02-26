@@ -31,12 +31,6 @@
         name: ../roles/backup
       tags: [backup]
 
-- hosts: firewall
-  tasks:
-    - import_role:
-        name: ../roles/firewall
-      tags: [firewall]
-
 - hosts: all
   tasks:
     - block:
