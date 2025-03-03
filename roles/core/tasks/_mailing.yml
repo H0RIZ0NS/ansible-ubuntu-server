@@ -32,6 +32,6 @@
 
 - name: Tweak sudo’s e-mail alerts
   template:
-    src: config/sudoers-mailing.conf
+    src: config/mailing.sudoers
     dest: /etc/sudoers.d/mailing
     mode: '0440'
