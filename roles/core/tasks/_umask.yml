@@ -1,16 +1,16 @@
 - name: Enforce a secure umask in /etc/login.defs
   lineinfile:
     path: /etc/login.defs
-    regexp: '{{ item.regexp }}'
-    line: '{{ item.line }}'
+    regexp: '^#?UMASK(\s+)'
+    line: 'UMASK\g<1>{{ umask_secure_value }}'
     state: present
     backrefs: true
-  with_items:
-    - regexp: '^#?UMASK(\s+)'
-      line: 'UMASK\g<1>{{ umask_secure_value }}'
 
-    - regexp: '^#?USERGROUPS_ENAB(\s+)'
-      line: 'USERGROUPS_ENAB\1no'
+- name: Enforce a secure umask in /etc/profile
+  template:
+    src: config/umask.sh
+    dest: /etc/profile.d/umask.sh
+    mode: '0644'
 
 - name: Enforce a secure default mode for home directories
   lineinfile:
