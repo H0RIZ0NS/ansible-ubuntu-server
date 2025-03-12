@@ -1,8 +1,8 @@
-backup_retention_days: 10
+backup_method: rsync
+backup_retention_days: 7
 
-backup_paths_included: []
-backup_paths_excluded: []
+backup_path_patterns: []
 
 backup_remote_host: ~
-backup_remote_user: backup
-backup_remote_target_dir: /var/backups
+backup_remote_user: ~
+backup_remote_dir: data

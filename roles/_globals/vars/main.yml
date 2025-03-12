@@ -3,7 +3,7 @@ server_ssh_listening_port: 22
 apt_cache_valid_time: 3600
 
 regexp:
-  fs_path: '^(?:/[\w\-\.\*]*)+$'
+  fs_path: '^[/\.\*\w\-]+$'
   timezone: '^[\w\-]+(?:[\+\-]\d+)?(?:/[\w\-]+)?$'
   locale: '^[a-z]{2}_[A-Z]{2}(?:\.[A-Z\d\-]+)?$'
   username: '^[a-z][a-z\d\-]{1,31}$'

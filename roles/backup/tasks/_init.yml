@@ -12,6 +12,7 @@
   apt:
     name:
       - rdiff-backup
+      - rsync
       - backupninja
     state: latest
     cache_valid_time: '{{ globals.apt_cache_valid_time }}'
@@ -29,10 +30,19 @@
     - regexp: '^reportinfo ='
       line: 'reportinfo = yes'
 
-- name: Copy the server backup config file
+    - regexp: '^#?reportprom ='
+      line: '#reportprom ='
+
+- name: Copy the files backup config file
   template:
-    src: config/server.conf
-    dest: '{{ backup_local_config_dir }}/50-server.rdiff'
+    src: 'config/files/{{ backup_method }}.conf'
+    dest: '{{ backup_config_dir }}/50-files.{{ backup_method }}'
     mode: '0600'
   vars:
     backup_ssh_key_path: '{{ backup_ssh_key.ssh_key_file }}'
+
+- name: Copy the path pattern list
+  template:
+    src: 'config/files/{{ backup_method }}/patterns.list'
+    dest: '{{ backup_path_pattern_file }}'
+    mode: '0600'
