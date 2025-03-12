@@ -1,15 +1,15 @@
 - name: Validate user-input variables
   assert:
     that:
+      - backup_method is string and backup_method in backup_supported_methods
       - backup_retention_days is integer and backup_retention_days > 0
-      - backup_paths_included is iterable
-      - backup_paths_excluded is iterable
+      - backup_path_patterns is iterable
       - backup_remote_host is string and backup_remote_host is match(globals.regexp.hostname)
       - backup_remote_user is string and backup_remote_user is match(globals.regexp.username)
-      - backup_remote_target_dir is string and backup_remote_target_dir is match(globals.regexp.fs_path)
+      - backup_remote_dir is string and backup_remote_dir is match(globals.regexp.fs_path)
 
-- name: Validate the included/excluded path lists
+- name: Validate the path pattern list
   assert:
     that:
-      - item is string and item is match(globals.regexp.fs_path)
-  with_items: '{{ backup_paths_included + backup_paths_excluded }}'
+      - item is string and item is match(backup_path_pattern_regexp[backup_method])
+  with_items: '{{ backup_path_patterns }}'

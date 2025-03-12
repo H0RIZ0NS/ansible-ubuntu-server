@@ -1,3 +1,15 @@
+backup_supported_methods:
+  - rdiff
+  - rsync
+
+backup_path_pattern_regexp:
+  rdiff: '^[+\-] [/*.\w\-]+$' # TODO
+  rsync: '^(?:(?:[+\-][/!srpx]*|[.:HSPR])[ _][/*.:,\w\-?\[\]{}]+|!|[+\-]C|)$' # TODO
+
+backup_config_dir: /etc/backup.d
+backup_path_pattern_file: /etc/backup.filelist
+
 backup_local_user: root
 backup_local_identity_file: backup.id_rsa
-backup_local_config_dir: /etc/backup.d
+
+backup_include_mysql: "{{ 'mysql' in group_names }}"
