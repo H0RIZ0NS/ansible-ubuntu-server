@@ -1,0 +1,5 @@
+{% for pattern in backup_path_patterns %}
+{{ pattern }}
+{% endfor %}
++ */
+- *

@@ -3,4 +3,4 @@
 - import_tasks: _init.yml
 
 - import_tasks: _mysql.yml
-  when: "'mysql' in group_names"
+  when: backup_include_mysql
