@@ -1,7 +1,3 @@
-- include_vars:
-    file: ../../_globals/vars/main.yml
-    name: globals
-
 - import_tasks: _validation.yml
 
 - name: Install MySQL dependencies

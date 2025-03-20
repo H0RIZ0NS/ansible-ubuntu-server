@@ -1,2 +1,4 @@
 dependencies:
-  - _password_dir
+  - role: _globals
+
+  - role: _password_dir

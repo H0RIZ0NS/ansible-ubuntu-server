@@ -1,0 +1,5 @@
+dependencies:
+  - role: _globals
+
+  - role: mysql
+    when: backup_include_mysql
