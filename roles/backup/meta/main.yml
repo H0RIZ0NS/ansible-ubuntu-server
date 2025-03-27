@@ -2,4 +2,4 @@ dependencies:
   - role: _globals
 
   - role: mysql
-    when: backup_include_mysql
+    when: "'mysql' in group_names"
