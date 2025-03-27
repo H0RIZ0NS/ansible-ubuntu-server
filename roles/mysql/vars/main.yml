@@ -1,6 +1,6 @@
 mysql_regexp:
-  database: '^[a-z0-9_-]{1,64}$'
-  username: '^[a-z0-9_-]{1,32}$'
+  database: '^[a-z0-9_\-]{1,64}$'
+  username: '^[a-z0-9_\-]{1,32}$'
 
 mysql_socket_path: /var/run/mysqld/mysqld.sock
 mysql_password_path_template: '{{ password_dir_local_path }}/mysql.%s@{{ inventory_hostname }}.pass'
