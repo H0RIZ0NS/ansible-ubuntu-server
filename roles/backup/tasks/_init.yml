@@ -49,8 +49,8 @@
   vars:
     backup_ssh_key_path: '{{ backup_ssh_key.ssh_key_file }}'
 
-- name: Copy the path pattern list
-  template:
-    src: 'config/files/{{ backup_method }}/patterns.list'
-    dest: '{{ backup_path_pattern_file }}'
-    mode: '0600'
+# - name: Copy the path pattern list
+#   template:
+#     src: 'config/files/{{ backup_method }}/patterns.list'
+#     dest: '{{ backup_path_pattern_file }}'
+#     mode: '0600'
