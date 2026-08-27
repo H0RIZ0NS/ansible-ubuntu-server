@@ -2,5 +2,11 @@
 
 - import_tasks: _init.yml
 
-- import_tasks: _http.yml
+- import_role:
+    name: ../roles/_http_logrotate
+  vars:
+    http_log_paths:
+      - '{{ docker_http_log_path }}'
+    http_logrotate_create_log_dirs: true
+    http_log_rotation_days: '{{ docker_http_log_rotation_days }}'
   when: docker_http_enabled

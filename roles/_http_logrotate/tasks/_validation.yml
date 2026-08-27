@@ -1,0 +1,12 @@
+- name: Validate user-input variables
+  assert:
+    that:
+      - http_log_paths is iterable
+      - http_logrotate_create_log_dirs is boolean
+      - http_log_rotation_days is integer and http_log_rotation_days > 0
+
+- name: Validate HTTP log paths
+  assert:
+    that:
+      - item is string and item is match(globals.regexp.fs_path)
+  with_items: '{{ http_log_paths }}'

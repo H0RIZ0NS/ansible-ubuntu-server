@@ -1,0 +1,10 @@
+- name: Enable custom Apache config partial
+  listen: apache_custom_config_added
+  command: a2enconf custom
+  notify: apache_config_changed
+
+- name: Reload Apache’s config
+  listen: apache_config_changed
+  service:
+    name: apache2
+    state: reloaded

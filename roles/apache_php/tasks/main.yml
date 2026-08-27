@@ -1,0 +1,11 @@
+- import_tasks: _validation.yml
+
+- import_tasks: _init.yml
+
+- import_role:
+    name: ../roles/_http_logrotate
+  vars:
+    http_log_paths:
+      - /var/log/apache2/*.log
+      - /var/log/apache2/*/*.log
+    http_log_rotation_days: '{{ apache_log_rotation_days }}'
