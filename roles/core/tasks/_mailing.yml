@@ -9,7 +9,7 @@
 - name: Use the system’s hostname as Postfix hostname
   copy:
     dest: /etc/mailname
-    content: "{{ ansible_fqdn }}\n"
+    content: "{{ ansible_facts['fqdn'] }}\n"
     mode: '0644'
   notify: postfix_config_changed
 
@@ -21,7 +21,7 @@
     state: present
   with_items:
     - regexp: '^myhostname ='
-      line: 'myhostname = {{ ansible_fqdn }}'
+      line: 'myhostname = {{ ansible_facts["fqdn"] }}'
 
     - regexp: '^mydestination ='
       line: 'mydestination = $myhostname, localhost.localdomain, localhost'

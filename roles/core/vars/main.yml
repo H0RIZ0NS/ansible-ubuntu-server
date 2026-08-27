@@ -34,7 +34,7 @@ apt_removed_packages:
   - snapd
   - ufw
 
-mailing_root_email_address: 'root@{{ ansible_fqdn }}'
+mailing_root_email_address: 'root@{{ ansible_facts["fqdn"] }}'
 
 users_password_path_template: '{{ password_dir_local_path }}/%s@{{ inventory_hostname }}.pass'
 
@@ -42,4 +42,4 @@ umask_allowed_values:
   - '027'
   - '077'
 
-umask_secure_dir_mode: "{{ '0777'|apply_umask(umask_secure_value) }}"
+umask_secure_dir_mode: '{{ "0777"|apply_umask(umask_secure_value) }}'

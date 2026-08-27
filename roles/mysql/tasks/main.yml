@@ -34,9 +34,9 @@
     name: '{{ item.name }}'
     host: '%'
     state: present
-    password: "{{ lookup('password', mysql_password_path_template|format(item.name)) }}"
+    password: '{{ lookup("password", mysql_password_path_template|format(item.name)) }}'
     update_password: on_create
-    priv: "{{ item.owned_databases|map('regex_replace', '$', '.*:ALL')|join('/') }}"
+    priv: '{{ item.owned_databases|map("regex_replace", "$", ".*:ALL")|join("/") }}'
     column_case_sensitive: true # TODO: Remove when community.mysql v4.0.0 gets released
     login_unix_socket: '{{ mysql_socket_path }}'
   with_items: '{{ mysql_users }}'
@@ -45,7 +45,7 @@
   lineinfile:
     path: /etc/mysql/mysql.conf.d/mysqld.cnf
     regexp: '^bind-address(\s+)='
-    line: "bind-address\\1= {{ '0.0.0.0' if mysql_is_public else '127.0.0.1' }}"
+    line: 'bind-address\1= {{ "0.0.0.0" if mysql_is_public else "127.0.0.1" }}'
     state: present
     backrefs: true
   notify: mysql_config_changed

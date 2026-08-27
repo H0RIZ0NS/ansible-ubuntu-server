@@ -14,7 +14,7 @@
   user:
     name: '{{ admin_user.name }}'
     state: present
-    password: "{{ lookup('password', users_password_path_template|format(admin_user.name) + ' encrypt=sha512_crypt') }}"
+    password: '{{ lookup("password", users_password_path_template|format(admin_user.name) + " encrypt=sha512_crypt") }}'
     update_password: on_create
     shell: /usr/bin/bash
     comment: ''
@@ -26,7 +26,7 @@
   user:
     name: '{{ item.name }}'
     state: present
-    password: "{{ lookup('password', users_password_path_template|format(item.name) + ' encrypt=sha512_crypt') }}"
+    password: '{{ lookup("password", users_password_path_template|format(item.name) + " encrypt=sha512_crypt") }}'
     update_password: on_create
     shell: /usr/bin/bash
     comment: ''
@@ -37,7 +37,7 @@
     user: '{{ item.name }}'
     key: '{{ item.authorized_key }}'
     state: present
-  with_items: "{{ ([admin_user] + user_list)|selectattr('authorized_key', 'defined') }}"
+  with_items: '{{ ([admin_user] + user_list)|selectattr("authorized_key", "defined") }}'
 
 - name: Disable root login
   lineinfile:
