@@ -1,13 +1,11 @@
-- name: Add Docker’s PPA key
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
-
-- name: Register Docker’s PPA
-  apt_repository:
-    repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable'
-    filename: docker
-    mode: '0644'
+- name: Register Docker’s official repository
+  deb822_repository:
+    name: docker
+    uris: https://download.docker.com/linux/ubuntu
+    architectures: amd64
+    suites: '{{ ansible_facts["distribution_release"] }}'
+    components: stable
+    signed_by: https://download.docker.com/linux/ubuntu/gpg
     state: present
   register: docker_repository
 
